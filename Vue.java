@@ -5,10 +5,16 @@ import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class Vue extends Modele {
+public class Vue extends Application {
+
+    // Constructeur de la classe Vue (tu peux l'utiliser pour initialiser des variables ou des propriétés)
+    public Vue() {
+        System.out.println("Vue initialisée !");
+    }
 
     @Override
     public void start(Stage primaryStage) {
+        // Titre de la fenêtre principale
         primaryStage.setTitle("Application Affaires");
 
         // HEADER
@@ -38,7 +44,6 @@ public class Vue extends Modele {
         // SECTION PRINCIPALE
         VBox mainSection = new VBox(20);
         Text affairesRecientesTitle = new Text("Affaires récentes");
-        // Ajouter des cartes d'affaire (à implémenter dans le contrôleur)
         HBox affairesRecientes = new HBox(20);
         affairesRecientes.getChildren().addAll(createAffaireCard(), createAffaireCard(), createAffaireCard());
 
@@ -73,7 +78,8 @@ public class Vue extends Modele {
         return card;
     }
 
+    // Méthode main pour lancer l'application
     public static void main(String[] args) {
-        launch(args);
+        launch(args);  // Lance l'application JavaFX
     }
 }

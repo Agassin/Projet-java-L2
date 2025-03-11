@@ -10,7 +10,7 @@ public class Modele {
         this.statut = statut;
         this.description = description;
     }
-
+    
     // Getters and Setters
     public String getImage() {
         return image;
