@@ -1,9 +1,14 @@
+// VUE : Interface graphique
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 class AffaireView extends JFrame {
     private JPanel panelAffaires;
+    private JPanel menuLateral;
     private AffaireController controller;
+    private boolean menuVisible = true;
 
     public AffaireView(AffaireController controller) {
         this.controller = controller;
@@ -15,6 +20,14 @@ class AffaireView extends JFrame {
         // HEADER
         JPanel header = new JPanel();
         header.setLayout(new FlowLayout());
+        JButton toggleMenuButton = new JButton("☰");
+        toggleMenuButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                toggleMenu();
+            }
+        });
+        header.add(toggleMenuButton);
         header.add(new JLabel("[Logo]"));
         header.add(new JTextField(20));
         header.add(new JButton("Profil"));
@@ -23,7 +36,7 @@ class AffaireView extends JFrame {
         add(header, BorderLayout.NORTH);
 
         // MENU LATÉRAL
-        JPanel menuLateral = new JPanel();
+        menuLateral = new JPanel();
         menuLateral.setLayout(new GridLayout(6, 1));
         menuLateral.add(new JButton("Affaires en cours"));
         menuLateral.add(new JButton("Recherche avancée"));
@@ -41,6 +54,13 @@ class AffaireView extends JFrame {
 
         // Remplissage avec des affaires
         afficherAffaires();
+    }
+
+    public void toggleMenu() {
+        menuVisible = !menuVisible;
+        menuLateral.setVisible(menuVisible);
+        revalidate();
+        repaint();
     }
 
     public void afficherAffaires() {
