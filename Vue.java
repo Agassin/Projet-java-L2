@@ -1,4 +1,3 @@
-// VUE : Interface graphique
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -30,7 +29,16 @@ class AffaireView extends JFrame {
         header.add(toggleMenuButton);
         header.add(new JLabel("[Logo]"));
         header.add(new JTextField(20));
-        header.add(new JButton("Profil"));
+
+        JButton profilButton = new JButton("Profil");
+        profilButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new LoginView(AffaireView.this).setVisible(true);
+            }
+        });
+        header.add(profilButton);
+
         header.add(new JButton("Notifications"));
         header.add(new JButton("Paramètres"));
         add(header, BorderLayout.NORTH);
@@ -43,7 +51,7 @@ class AffaireView extends JFrame {
         menuLateral.add(new JButton("Analyse de liens"));
         menuLateral.add(new JButton("Prédictions de suspects"));
         menuLateral.add(new JButton("Historique des commentaires"));
-        menuLateral.add(new JButton("jsp quoi en faire du dernier"));
+        menuLateral.add(new JButton("Autre"));
         add(menuLateral, BorderLayout.WEST);
 
         // SECTION PRINCIPALE
@@ -52,7 +60,6 @@ class AffaireView extends JFrame {
         JScrollPane scrollPane = new JScrollPane(panelAffaires);
         add(scrollPane, BorderLayout.CENTER);
 
-        // Remplissage avec des affaires
         afficherAffaires();
     }
 
@@ -76,5 +83,14 @@ class AffaireView extends JFrame {
         }
         panelAffaires.revalidate();
         panelAffaires.repaint();
+    }
+
+    public void afficherProfil(String username) {
+        JPanel profilPanel = new JPanel();
+        profilPanel.setLayout(new GridLayout(4, 1));
+        profilPanel.add(new JLabel("Nom : " + username));
+        profilPanel.add(new JLabel("Email : " + username + "@exemple.com"));
+        profilPanel.add(new JLabel("ID utilisateur : " + username.hashCode()));
+        JOptionPane.showMessageDialog(this, profilPanel, "Profil utilisateur", JOptionPane.INFORMATION_MESSAGE);
     }
 }

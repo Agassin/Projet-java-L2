@@ -13,3 +13,4 @@ class Affaire {
     public String getStatut() { return statut; }
     public String getDescription() { return description; }
 }
+
