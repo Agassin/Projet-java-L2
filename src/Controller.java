@@ -46,7 +46,7 @@ class AffaireController {
     
     }
 
-    public static List<Affaire> lireAffairesCSV(String fichier, List<Personne> personnes) throws IOException {
+    public static List<Affaire> lireAffairesCSV(String fichier, List<Personne> personnes) throws IOException, CsvValidationException {
         List<Affaire> affaires = new ArrayList<>();
         CSVReader reader = new CSVReader(new FileReader(fichier));
         String[] nextLine;
@@ -93,7 +93,7 @@ class AffaireController {
 
     
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws CsvValidationException {
         try {
             List<Personne> personnes = lirePersonnesCSV("Personnes_Updated.csv");
             List<Affaire> affaires = lireAffairesCSV("Affaire_Updated.csv", personnes);
