@@ -43,7 +43,7 @@ class AffaireView extends JFrame {
         menuLateral.add(new JButton("Analyse de liens"));
         menuLateral.add(new JButton("Prédictions de suspects"));
         menuLateral.add(new JButton("Historique des commentaires"));
-        menuLateral.add(new JButton("Paramètres"));
+        menuLateral.add(new JButton("jsp quoi en faire du dernier"));
         add(menuLateral, BorderLayout.WEST);
 
         // SECTION PRINCIPALE
