@@ -20,6 +20,34 @@ public class Personne {
     public String getNomComplet() {
         return prenom + " " + nom;
     }
+    public String getNom() {
+        return nom;
+    }
+    public String getPrenom() {
+        return prenom;
+    }
+
+
+    
+    public String getQuartier() {
+        return quartier;
+    }
+
+    public String getProfession() {
+        return profession;
+    }
+
+    public String getGenre() {
+        return genre;
+    }
+
+    public String getAntecedents() {
+        return antecedents;
+    }
+
+    public List<Personne> getLiensPotentiels() {
+        return liensPotentiels;
+    }
 
     public void ajouterLienPotentiel(Personne p) {
         liensPotentiels.add(p);
