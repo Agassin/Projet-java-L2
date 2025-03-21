@@ -1,4 +1,3 @@
-
 import javax.swing.*;
 
 // MAIN : Lancer l'application
