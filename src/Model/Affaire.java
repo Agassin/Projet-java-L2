@@ -1,4 +1,4 @@
-
+package model;
 import java.util.ArrayList;
 
 public class Affaire {
@@ -24,13 +24,12 @@ public class Affaire {
         return coupable;
     }
 
+    public String getEtat() {
+        return etat;
+    }
+
     @Override
     public String toString() {
         return "Affaire: " + nomAffaire + " | Crime: " + crime + " | Lieu: " + lieu + " | État: " + etat;
     }
-
-
-
-
-    
 }

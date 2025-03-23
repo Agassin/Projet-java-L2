@@ -1,4 +1,7 @@
+package src.vue;
 
+import src.controller.AffaireController;
+import src.model.Affaire;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -73,14 +76,18 @@ class AffaireView extends JFrame {
 
     public void afficherAffaires() {
         panelAffaires.removeAll();
-        for (Affaire affaire : controller.getAffaires()) {
-            JPanel carte = new JPanel();
-            carte.setLayout(new BorderLayout());
-            carte.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-            carte.add(new JLabel("Image"), BorderLayout.NORTH);
-            carte.add(new JLabel(affaire.getTitre()), BorderLayout.CENTER);
-            carte.add(new JLabel(affaire.getStatut()), BorderLayout.SOUTH);
-            panelAffaires.add(carte);
+        if (controller.getAffaires().isEmpty()) {
+            panelAffaires.add(new JLabel("Aucune affaire à afficher."));
+        } else {
+            for (Affaire affaire : controller.getAffaires()) {
+                JPanel carte = new JPanel();
+                carte.setLayout(new BorderLayout());
+                carte.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+                carte.add(new JLabel("Image"), BorderLayout.NORTH);
+                carte.add(new JLabel(affaire.toString()), BorderLayout.CENTER);
+                carte.add(new JLabel(affaire.getEtat()), BorderLayout.SOUTH);
+                panelAffaires.add(carte);
+            }
         }
         panelAffaires.revalidate();
         panelAffaires.repaint();

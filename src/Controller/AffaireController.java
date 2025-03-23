@@ -1,4 +1,7 @@
+package src.controller;
 
+import src.model.Affaire;
+import src.model.Personne;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 import java.io.FileReader;
@@ -6,13 +9,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class AffaireController {
     private List<Affaire> affaires;
 
     public AffaireController() {
-
-            //affaires = new ArrayList<>();
+        affaires = new ArrayList<>();
     }
 
     public static Personne trouverPersonneParNom(List<Personne> personnes, String nom) {
@@ -69,8 +70,11 @@ public class AffaireController {
 
 
     public void ajouterAffaire(Affaire affaire) {
-        //affaires.add(affaire);
+        if (affaires == null) {
+            affaires = new ArrayList<>();
         }
+        affaires.add(affaire);
+    }
         
     
     public static void afficherCoupableAffaire(String nomAffaire, List<Affaire> affaires) {
@@ -89,7 +93,7 @@ public class AffaireController {
     
 
     public List<Affaire> getAffaires() {
-        return affaires;
+        return affaires != null ? affaires : new ArrayList<>();
     }
 
     

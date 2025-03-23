@@ -1,3 +1,6 @@
+package model;
+import java.util.ArrayList;
+
 public class Personne {
     private String nom;
     private String prenom;
