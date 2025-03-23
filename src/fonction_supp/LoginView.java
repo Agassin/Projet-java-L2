@@ -41,7 +41,7 @@ public class LoginView extends JFrame {
         });
         add(loginButton);
     }
-    
+
 
     private void verifierConnexion() {  // Method
         String username = usernameField.getText();
