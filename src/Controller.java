@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-class AffaireController {
+public class AffaireController {
     private List<Affaire> affaires;
 
     public AffaireController() {

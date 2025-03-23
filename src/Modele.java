@@ -2,7 +2,7 @@ package src;
 
 import java.util.ArrayList;
 
-class Affaire {
+public class Affaire {
     private String nomAffaire;
     private String crime;
     private Personne suspect;
@@ -35,7 +35,7 @@ class Affaire {
 
     
 }
-class Personne {
+public class Personne {
     private String nom;
     private String prenom;
     private String quartier;
