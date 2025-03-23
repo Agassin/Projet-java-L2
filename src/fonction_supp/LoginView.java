@@ -8,7 +8,7 @@ import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.Map;
 
-class LoginView extends JFrame {
+public class LoginView extends JFrame {
     private JTextField usernameField;
     private JPasswordField passwordField;
     private Map<String, String> users;
@@ -41,6 +41,7 @@ class LoginView extends JFrame {
         });
         add(loginButton);
     }
+    
 
     private void verifierConnexion() {  // Method
         String username = usernameField.getText();
