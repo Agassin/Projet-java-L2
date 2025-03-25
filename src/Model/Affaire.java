@@ -1,5 +1,4 @@
-package src.model;
-import java.util.ArrayList;
+package src.Model;
 
 public class Affaire {
     private String nomAffaire;
@@ -32,4 +31,5 @@ public class Affaire {
     public String toString() {
         return "Affaire: " + nomAffaire + " | Crime: " + crime + " | Lieu: " + lieu + " | État: " + etat;
     }
+    
 }

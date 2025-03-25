@@ -1,13 +1,12 @@
-package src.vue;
+package src.Vue;
 
-import src.controller.AffaireController;
+import src.Controller.AffaireController;
 import src.fonction_supp.LoginView;
-import src.model.Affaire;
+import src.Model.Affaire;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Objects;
 
 public class AffaireView extends JFrame {
     private JPanel panelAffaires;

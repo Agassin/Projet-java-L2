@@ -1,8 +1,8 @@
 package src;
 
-import src.controller.AffaireController;
-import src.model.Affaire;
-import src.vue.AffaireView;
+import src.Controller.AffaireController;
+import src.Model.Affaire;
+import src.Vue.AffaireView;
 import javax.swing.*;
 
 // MAIN : Lancer l'application

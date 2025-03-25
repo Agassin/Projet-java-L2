@@ -1,6 +1,6 @@
 package src.fonction_supp;
 
-import src.vue.AffaireView;
+import src.Vue.AffaireView;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
