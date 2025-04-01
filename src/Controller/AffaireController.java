@@ -4,6 +4,7 @@ import src.Model.Affaire;
 import src.Model.Personne;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
+import org.apache.commons.lang3.ObjectUtils;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -11,9 +12,11 @@ import java.util.List;
 
 public class AffaireController {
     private List<Affaire> affaires;
+    private List<Personne> personnes;
 
     public AffaireController() {
         affaires = new ArrayList<>();
+        personnes = new ArrayList<>();
     }
 
     public static Personne trouverPersonneParNom(List<Personne> personnes, String nom) {
@@ -99,6 +102,13 @@ public class AffaireController {
         return affaires != null ? affaires : new ArrayList<>();
     }
 
+    // Dans AffaireController
+
+    public List<Personne> getPersonnes() {
+        return lirePersonnesCSV("src/BDD/Personnes.csv");
+    }
+
+    
     public static void main(String[] args) {
         try {
             List<Personne> personnes = lirePersonnesCSV("src/BDD/Personnes.csv");

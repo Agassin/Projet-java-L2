@@ -3,6 +3,8 @@ package src.Vue;
 import src.Controller.AffaireController;
 import src.fonction_supp.LoginView;
 import src.Model.Affaire;
+import src.Model.Personne;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -13,6 +15,8 @@ public class AffaireView extends JFrame {
     private JPanel menuLateral;
     private AffaireController controller;
     private boolean menuVisible = true;
+    private JTextField searchField;
+
 
     public AffaireView(AffaireController controller) {
         this.controller = controller;
@@ -54,6 +58,26 @@ public class AffaireView extends JFrame {
         header.add(createStyledButton("Notifications"));
         header.add(createStyledButton("Paramètres"));
         add(header, BorderLayout.NORTH);
+
+        // Ajouter un écouteur pour détecter les changements dans la barre de recherche
+    searchField.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+        public void insertUpdate(javax.swing.event.DocumentEvent e) {
+            rechercher();
+        }
+    
+        public void removeUpdate(javax.swing.event.DocumentEvent e) {
+            rechercher();
+        }
+    
+        public void changedUpdate(javax.swing.event.DocumentEvent e) {
+            rechercher();
+        }
+    
+        private void rechercher() {
+            String searchText = searchField.getText();
+            afficherAffaires(searchText);
+        }
+    });
 
         // MENU LATÉRAL
         menuLateral = new JPanel();
@@ -124,6 +148,84 @@ public class AffaireView extends JFrame {
 
         return button;
     }
+
+
+    
+
+
+
+    public void afficherAffaires(String searchText) {
+        panelAffaires.removeAll();
+    
+        // Si la recherche est vide
+        if (searchText.trim().isEmpty()) {
+            panelAffaires.add(new JLabel("Veuillez entrer un terme de recherche."));
+        } else {
+            boolean found = false;
+    
+            // Extraire le numéro d'affaire si l'utilisateur a écrit "Affaire X"
+            String numeroRecherche = searchText.replaceAll("[^0-9]", ""); // On prend seulement les chiffres
+    
+            // Recherche des personnes
+            for (Personne personne : controller.getPersonnes()) {
+                // Vérifier que les propriétés sont des chaînes non nulles avant d'appliquer toLowerCase
+                if (personne.getPrenom() != null && personne.getPrenom().toLowerCase().contains(searchText.toLowerCase()) ||
+                    personne.getNom() != null && personne.getNom().toLowerCase().contains(searchText.toLowerCase()) ||
+                    personne.getQuartier() != null && personne.getQuartier().toLowerCase().contains(searchText.toLowerCase()) ||
+                    personne.getProfession() != null && personne.getProfession().toLowerCase().contains(searchText.toLowerCase()) ||
+                    personne.getAntecedents() != null && personne.getAntecedents().toLowerCase().contains(searchText.toLowerCase())) {
+                    
+                    found = true;
+                    JPanel cartePersonne = new JPanel();
+                    cartePersonne.setLayout(new BorderLayout());
+                    cartePersonne.setBorder(BorderFactory.createLineBorder(Color.BLUE));
+                    cartePersonne.add(new JLabel("Personne trouvée : " + personne.getNomComplet()), BorderLayout.CENTER);
+                    panelAffaires.add(cartePersonne);
+                }
+            }
+    
+            // Recherche des affaires par nom "Affaire X"
+            for (Affaire affaire : controller.getAffaires()) {
+                boolean match = false;
+    
+                // Si l'utilisateur a entré "Affaire X", on regarde le numéro
+                if (searchText != null && searchText.toLowerCase().contains("affaire")) {
+                    if (affaire.getNomAffaire() != null && ((String) affaire.getNomAffaire()).toLowerCase().contains("affaire " + numeroRecherche.toLowerCase())) {
+                        match = true;
+                    }
+                } else {
+                    // Recherche plus générale, n'importe où dans l'affaire
+                    if (affaire.getNomAffaire() != null && ((String) affaire.getNomAffaire()).toLowerCase().contains(numeroRecherche.toLowerCase())) {
+                        match = true;
+                    }
+                }
+    
+                if (match) {
+                    found = true;
+                    JPanel carteAffaire = new JPanel();
+                    carteAffaire.setLayout(new BorderLayout());
+                    carteAffaire.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+                    carteAffaire.add(new JLabel("Affaire : " + affaire.getNomAffaire()), BorderLayout.CENTER);
+                    panelAffaires.add(carteAffaire);
+                }
+            }
+    
+            // Si aucune correspondance n'est trouvée
+            if (!found) {
+                panelAffaires.add(new JLabel("Aucune correspondance trouvée."));
+            }
+        }
+    
+        // Revalidate and repaint the panel to reflect changes
+        panelAffaires.revalidate();
+        panelAffaires.repaint();
+    }
+    
+    
+    
+    
+    
+
 
     public void afficherProfil(String username) {
         JPanel profilPanel = new JPanel();

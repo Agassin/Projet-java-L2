@@ -23,6 +23,11 @@ public class Affaire {
         return coupable;
     }
 
+    public Personne getSuspect() {
+        return this.suspect; 
+    }
+
+
     public String getEtat() {
         return etat;
     }
@@ -30,6 +35,10 @@ public class Affaire {
     @Override
     public String toString() {
         return "Affaire: " + nomAffaire + " | Crime: " + crime + " | Lieu: " + lieu + " | État: " + etat;
+    }
+
+    public Object getNomAffaire() {
+        return nomAffaire;
     }
     
 }
