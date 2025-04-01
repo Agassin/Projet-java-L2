@@ -37,7 +37,7 @@ public class Affaire {
         return "Affaire: " + nomAffaire + " | Crime: " + crime + " | Lieu: " + lieu + " | État: " + etat;
     }
 
-    public Object getNomAffaire() {
+    public String getNomAffaire() {
         return nomAffaire;
     }
     

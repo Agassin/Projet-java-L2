@@ -20,6 +20,7 @@ public class AffaireController {
     }
 
     public static Personne trouverPersonneParNom(List<Personne> personnes, String nom) {
+        
         for (Personne p : personnes) {
             if (p.getNomComplet().equalsIgnoreCase(nom)) {
                 return p;
