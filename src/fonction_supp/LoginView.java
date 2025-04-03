@@ -9,14 +9,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class LoginView extends JFrame {
-    private JTextField usernameField;
-    private JPasswordField passwordField;
-    private Map<String, String> users;
-    private AffaireView mainView;
 
     public LoginView(AffaireView mainView) {   // Constructor
-        this.mainView = mainView;
-        users = new HashMap<>();
+        Map<String, String> users = new HashMap<>();
         users.put("admin", "password123");
 
         setTitle("Connexion");
@@ -25,24 +20,27 @@ public class LoginView extends JFrame {
         setLayout(new GridLayout(3, 2));
 
         add(new JLabel("Identifiant:"));
-        usernameField = new JTextField();
+        JTextField usernameField = new JTextField();
         add(usernameField);
 
         add(new JLabel("Mot de passe:"));
-        passwordField = new JPasswordField();
+        JPasswordField passwordField = new JPasswordField();
         add(passwordField);
 
         JButton loginButton = new JButton("Se connecter");
+        /*
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 verifierConnexion();
             }
         });
+        */
         add(loginButton);
     }
 
 
+/*
     private void verifierConnexion() {  // Method
         String username = usernameField.getText();
         String password = new String(passwordField.getPassword());
@@ -55,5 +53,7 @@ public class LoginView extends JFrame {
             JOptionPane.showMessageDialog(this, "Identifiant ou mot de passe incorrect !");
         }
     }
+*/
 }
+
 
