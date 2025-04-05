@@ -1,9 +1,9 @@
-package src.Vue;
+package src.vue;
 
-import src.Controller.AffaireController;
+import src.controller.AffaireController;
 import src.fonction_supp.LoginView;
-import src.Model.Affaire;
-import src.Model.Personne;
+import src.model.Affaire;
+import src.model.Personne;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -62,8 +62,8 @@ public class AffaireView extends JFrame {
         // Boutons à droite
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
         buttonPanel.add(createIconButton("Profil", Color.BLUE));
-        buttonPanel.add(createIconButton("Notifications", Color.ORANGE));
-        buttonPanel.add(createIconButton("Paramètres", Color.GRAY));
+        buttonPanel.add(createIconButton("Notifications", Color.LIGHT_GRAY));
+        buttonPanel.add(createIconButton("Paramètres", Color.red));
         header.add(buttonPanel, BorderLayout.EAST);
 
         mainPanel.add(header, BorderLayout.NORTH);
@@ -84,10 +84,10 @@ public class AffaireView extends JFrame {
         JPanel statsPanel = new JPanel(new GridLayout(1, 4, 15, 15));
         statsPanel.setBorder(new EmptyBorder(0, 0, 20, 0));
 
-        statsPanel.add(createStatCard("Affaires en cours", "5,100", "20%", Color.decode("#4CAF50")));
-        statsPanel.add(createStatCard("Revenus", "2,000", "60%", Color.decode("#2196F3")));
-        statsPanel.add(createStatCard("Dépenses", "3,000", "60%", Color.decode("#F44336")));
-        statsPanel.add(createStatCard("Autres revenus", "550", "95%", Color.decode("#FFC107")));
+        statsPanel.add(createStatCard("Affaires en cours", "5,000", "62.5%", Color.decode("#4CAF50")));
+        statsPanel.add(createStatCard("Affaires classé", "2,500", "31.25%", Color.decode("#2196F3")));
+        statsPanel.add(createStatCard("Affaires importantes", "500", "6.25%", Color.decode("#F44336")));
+        statsPanel.add(createStatCard("Amandes a verser", "15 000", "€", Color.decode("#FFC107")));
 
         dashboardPanel.add(statsPanel, BorderLayout.NORTH);
 
@@ -112,12 +112,12 @@ public class AffaireView extends JFrame {
         JPanel notices = new JPanel();
         notices.setLayout(new BoxLayout(notices, BoxLayout.Y_AXIS));
 
-        notices.add(createNoticeItem("Simple Mplayout API Doc", "04/10/2021", "Nouvelle documentation API disponible"));
-        notices.add(createNoticeItem("Nélemode", "03/10/2021", "Sets the hide mode for the component..."));
-        notices.add(createNoticeItem("Tag", "03/10/2021", "Tags the component with metadata name..."));
-        notices.add(createNoticeItem("Further Reading", "12:30 PM", "There are more information to digest..."));
-        notices.add(createNoticeItem("Span", "10:30 AM", "Spans the current cell over a number of cells..."));
-        notices.add(createNoticeItem("Skip", "9:00 AM", "Steps a number of cells in the flow..."));
+        notices.add(createNoticeItem("Ajout d'un délit mineur", "9:00 AM", "Un boulanger signale le vol répété de baguettes laissées à refroidir sur le rebord de sa fenêtre. Après planque et caméra, la police découvre qu’un voisin affamé les subtilise chaque matin en douce."));
+        notices.add(createNoticeItem("Ajout d'une affaire urgente", "10:30 AM", "À minuit pile, un quartier entier devient silencieux et inhabité pendant exactement 60 minutes. La police découvre un réseau d’expériences illégales sur la manipulation sonore et comportementale."));
+        notices.add(createNoticeItem("pot de départ du sergent Grey", "12:30 PM", "Il y a un pot de départ surprise pour le sergent Grey a la fin du service donc venez nombreux"));
+        notices.add(createNoticeItem("Affaire devenue urgente", "30/03/2025", "Des bouquets de roses noires sont laissés sur les scènes de crime avant chaque meurtre. Le tueur s’avère être un ancien fleuriste reconverti en justicier vengeur."));
+        notices.add(createNoticeItem("Ajout de l'affaire du Cambrioleur Fantôme", "23/03/2025", "Plusieurs maisons sont cambriolées sans aucune trace d’effraction ni empreinte. La police découvre finalement un tunnel souterrain reliant les habitations entre elles."));
+        notices.add(createNoticeItem("ARRESTATION", "04/03/2025", "L'agent John Nolan a arrété le coupable de l'affaire n°75"));
 
         JScrollPane noticeScroll = new JScrollPane(notices);
         noticePanel.add(noticeScroll, BorderLayout.CENTER);

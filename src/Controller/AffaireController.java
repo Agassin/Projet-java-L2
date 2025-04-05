@@ -1,7 +1,7 @@
-package src.Controller;
+package src.controller;
 
-import src.Model.Affaire;
-import src.Model.Personne;
+import src.model.Affaire;
+import src.model.Personne;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 import org.apache.commons.lang3.ObjectUtils;
