@@ -96,7 +96,7 @@ public class AffaireView extends JFrame {
 
         // Panel des affaires (version modifiée avec les cartes)
         JPanel affairesPanel = new JPanel(new BorderLayout());
-        affairesPanel.setBorder(BorderFactory.createTitledBorder("Liste des Affaires"));
+        affairesPanel.setBorder(BorderFactory.createTitledBorder("Liste des citoyens"));
 
         // Remplacement du tableau par le système de cartes
         panelAffaires = new JPanel(new GridLayout(0, 3, 10, 10));
