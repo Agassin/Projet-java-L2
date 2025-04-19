@@ -4,7 +4,6 @@ import src.model.Affaire;
 import src.model.Personne;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
-import org.apache.commons.lang3.ObjectUtils;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,114 +14,107 @@ public class AffaireController {
     private List<Personne> personnes;
 
     public AffaireController() {
-        affaires = new ArrayList<>();
-        personnes = new ArrayList<>();
+        this.affaires = new ArrayList<>();
+        this.personnes = new ArrayList<>();
+        chargerDonneesInitiales();
     }
 
-    public static Personne trouverPersonneParNom(List<Personne> personnes, String nom) {
-        
-        for (Personne p : personnes) {
-            if (p.getNomComplet().equalsIgnoreCase(nom)) {
-                return p;
-            }
+    private void chargerDonneesInitiales() {
+        // Chargement depuis CSV
+        try {
+            this.personnes = lirePersonnesCSV("src/BDD/Personnes.csv");
+            this.affaires = lireAffairesCSV("src/BDD/Affaire.csv", this.personnes);
+        } catch (Exception e) {
+            System.err.println("Erreur chargement données CSV: " + e.getMessage());
+            // Données de test en cas d'échec
+            ajouterAffaire(new Affaire("Affaire 1", "Vol", null, null, "Paris", "Ouvert", "2023-01-01"));
+            ajouterAffaire(new Affaire("Affaire 2", "Fraude", null, null, "Lyon", "Fermé", "2023-02-01"));
+            ajouterAffaire(new Affaire("Affaire 3", "Cambriolage", null, null, "Marseille", "En cours", "2023-03-01"));
         }
-        return null; // Retourne null si la personne n'est pas trouvée
-    }
-
-    public static List<Personne> lirePersonnesCSV(String fichier) {
-        List<Personne> personnes = new ArrayList<>();
-        try (CSVReader reader = new CSVReader(new FileReader(fichier))) {
-            String[] nextLine;
-            reader.readNext(); // Ignorer la ligne des entêtes
-
-            while ((nextLine = reader.readNext()) != null) {
-                if (nextLine.length < 6) continue; // Vérifier qu'on a bien toutes les colonnes
-
-                String nom = nextLine[0].trim();
-                String prenom = nextLine[1].trim();
-                String quartier = nextLine[2].trim();
-                String profession = nextLine[3].trim();
-                String genre = nextLine[4].trim();
-                String antecedents = nextLine[5].trim();
-
-                personnes.add(new Personne(nom, prenom, quartier, profession, genre, antecedents));
-            }
-        } catch (IOException | CsvValidationException e) {
-            System.err.println("Erreur lors de la lecture du fichier " + fichier + " : " + e.getMessage());
-        }
-        return personnes;
-    }
-
-    public static List<Affaire> lireAffairesCSV(String fichier, List<Personne> personnes) {
-        List<Affaire> affaires = new ArrayList<>();
-        try (CSVReader reader = new CSVReader(new FileReader(fichier))) {
-            String[] nextLine;
-            reader.readNext(); // Ignorer la première ligne (entêtes)
-
-            while ((nextLine = reader.readNext()) != null) {
-                if (nextLine.length < 7) continue; // Vérifier qu'on a bien toutes les colonnes
-
-                String nomAffaire = nextLine[0].trim();
-                String crime = nextLine[1].trim();
-                Personne suspect = trouverPersonneParNom(personnes, nextLine[2].trim());
-                Personne coupable = nextLine[3].isEmpty() ? null : trouverPersonneParNom(personnes, nextLine[3].trim());
-                String lieu = nextLine[4].trim();
-                String etat = nextLine[5].trim();
-                String date = nextLine[6].trim();
-
-                affaires.add(new Affaire(nomAffaire, crime, suspect, coupable, lieu, etat, date));
-            }
-        } catch (IOException | CsvValidationException e) {
-            System.err.println("Erreur lors de la lecture du fichier " + fichier + " : " + e.getMessage());
-        }
-        return affaires;
     }
 
     public void ajouterAffaire(Affaire affaire) {
-        if (affaires == null) {
-            affaires = new ArrayList<>();
+        if (affaire == null) {
+            throw new IllegalArgumentException("L'affaire ne peut pas être null");
         }
         affaires.add(affaire);
     }
 
-    public static void afficherCoupableAffaire(String nomAffaire, List<Affaire> affaires) {
-        for (Affaire affaire : affaires) {
-            if (affaire.toString().contains(nomAffaire)) {
-                if (affaire.getCoupable() != null) {
-                    System.out.println("Le coupable de " + nomAffaire + " est : " + affaire.getCoupable().getNomComplet());
-                } else {
-                    System.out.println("Aucun coupable trouvé pour " + nomAffaire);
-                }
-                return;
+    public static List<Personne> lirePersonnesCSV(String fichier) throws IOException, CsvValidationException {
+        List<Personne> personnes = new ArrayList<>();
+        try (CSVReader reader = new CSVReader(new FileReader(fichier))) {
+            String[] nextLine;
+            reader.readNext(); // Ignorer l'en-tête
+
+            while ((nextLine = reader.readNext()) != null) {
+                if (nextLine.length < 6) continue;
+
+                personnes.add(new Personne(
+                        nextLine[0].trim(), // nom
+                        nextLine[1].trim(), // prenom
+                        nextLine[2].trim(), // quartier
+                        nextLine[3].trim(), // profession
+                        nextLine[4].trim(), // genre
+                        nextLine[5].trim()  // antecedents
+                ));
             }
         }
-        System.out.println("Affaire non trouvée !");
+        return personnes;
+    }
+
+    public static List<Affaire> lireAffairesCSV(String fichier, List<Personne> personnes) throws IOException, CsvValidationException {
+        List<Affaire> affaires = new ArrayList<>();
+        try (CSVReader reader = new CSVReader(new FileReader(fichier))) {
+            String[] nextLine;
+            reader.readNext(); // Ignorer l'en-tête
+
+            while ((nextLine = reader.readNext()) != null) {
+                if (nextLine.length < 7) continue;
+
+                affaires.add(new Affaire(
+                        nextLine[0].trim(), // nomAffaire
+                        nextLine[1].trim(), // crime
+                        trouverPersonneParNom(personnes, nextLine[2].trim()), // suspect
+                        nextLine[3].isEmpty() ? null : trouverPersonneParNom(personnes, nextLine[3].trim()), // coupable
+                        nextLine[4].trim(), // lieu
+                        nextLine[5].trim(), // etat
+                        nextLine[6].trim()  // date
+                ));
+            }
+        }
+        return affaires;
+    }
+
+    public static Personne trouverPersonneParNom(List<Personne> personnes, String nom) {
+        if (nom == null || nom.trim().isEmpty()) return null;
+
+        return personnes.stream()
+                .filter(p -> p.getNomComplet().equalsIgnoreCase(nom))
+                .findFirst()
+                .orElse(null);
     }
 
     public List<Affaire> getAffaires() {
-        return affaires != null ? affaires : new ArrayList<>();
+        return new ArrayList<>(affaires);
     }
-
-    // Dans AffaireController
 
     public List<Personne> getPersonnes() {
-        return lirePersonnesCSV("src/BDD/Personnes.csv");
+        return new ArrayList<>(personnes);
     }
 
-    
-    public static void main(String[] args) {
-        try {
-            List<Personne> personnes = lirePersonnesCSV("src/BDD/Personnes.csv");
-            List<Affaire> affaires = lireAffairesCSV("src/BDD/Affaire.csv", personnes);
-
-            System.out.println("Personnes chargées : " + personnes.size());
-            System.out.println("Affaires chargées : " + affaires.size());
-            System.out.println(personnes);
-
-            afficherCoupableAffaire("Affaire_1", affaires);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void afficherCoupableAffaire(String nomAffaire) {
+        affaires.stream()
+                .filter(a -> a.getNomAffaire().equalsIgnoreCase(nomAffaire))
+                .findFirst()
+                .ifPresentOrElse(
+                        a -> {
+                            if (a.getCoupable() != null) {
+                                System.out.println("Coupable: " + a.getCoupable().getNomComplet());
+                            } else {
+                                System.out.println("Aucun coupable trouvé");
+                            }
+                        },
+                        () -> System.out.println("Affaire non trouvée")
+                );
     }
 }

@@ -40,5 +40,12 @@ public class Affaire {
     public String getNomAffaire() {
         return nomAffaire;
     }
-    
+
+    public String getLieu() {
+        return this.lieu;
+    }
+
+    public String getCrime() {
+        return this.crime;
+    }
 }
