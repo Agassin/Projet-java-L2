@@ -1,8 +1,8 @@
-package src.vue;
+package src.Vue;
 
-import src.controller.AffaireController;
-import src.model.Affaire;
-import src.model.Personne;
+import src.Controller.AffaireController;
+import src.Model.Affaire;
+import src.Model.Personne;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
@@ -15,11 +15,14 @@ public class AffaireView extends JFrame {
     private JPanel mainPanel;
     private JTextField searchField;
     private JPanel panelAffaires;
+    private JButton btnAffaires, btnPersonnes;
+    private boolean showAffaires = true;
+    private boolean showPersonnes = true;
 
     public AffaireView(AffaireController controller) {
         this.controller = Objects.requireNonNull(controller, "Controller ne peut pas être null");
         initUI();
-        loadData();
+        refreshDisplay();
     }
 
     private void initUI() {
@@ -28,11 +31,13 @@ public class AffaireView extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        mainPanel = new JPanel(new BorderLayout(10, 10));
-        mainPanel.setBorder(new EmptyBorder(15, 15, 15, 15));
+        mainPanel = new JPanel(new BorderLayout());
+        mainPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
         add(mainPanel);
 
         createHeader();
+
+
         createDashboard();
     }
 
@@ -70,34 +75,110 @@ public class AffaireView extends JFrame {
         });
     }
 
+
+    private void toggleFilter(JButton button, Runnable toggleAction) {
+        toggleAction.run();
+        button.setBackground(button.getBackground() == new Color(0, 120, 215)
+                ? new Color(200, 200, 200)
+                : new Color(0, 120, 215));
+        button.setForeground(button.getForeground() == Color.WHITE ? Color.BLACK : Color.WHITE);
+        refreshDisplay();
+    }
+
+    private JButton createFilterButton(String text) {
+        JButton btn = new JButton(text);
+        btn.setPreferredSize(new Dimension(100, 30));
+        btn.setFocusPainted(false);
+        btn.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(Color.GRAY),
+                BorderFactory.createEmptyBorder(5, 15, 5, 15)
+        ));
+        return btn;
+    }
+
     private void createDashboard() {
         JPanel dashboard = new JPanel(new BorderLayout());
+        dashboard.setBorder(new EmptyBorder(10, 20, 20, 20));
 
-        // Cartes stats
+        // Cartes stats (inchangé)
         JPanel statsPanel = new JPanel(new GridLayout(1, 4, 15, 15));
-        statsPanel.add(createStatCard("Affaires en cours", "5", "62.5%", new Color(76, 175, 80)));
+        statsPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
+        statsPanel.add(createStatCard("Affaires en cours", "5", "62%", new Color(76, 175, 80)));
         statsPanel.add(createStatCard("Affaires classées", "2", "25%", new Color(33, 150, 243)));
-        statsPanel.add(createStatCard("Affaires urgentes", "1", "12.5%", new Color(244, 67, 54)));
+        statsPanel.add(createStatCard("Affaires urgentes", "1", "12%", new Color(244, 67, 54)));
         statsPanel.add(createStatCard("Amendes à verser", "15 000", "€", new Color(255, 193, 7)));
         dashboard.add(statsPanel, BorderLayout.NORTH);
 
         // Contenu principal
-        JPanel contentPanel = new JPanel(new GridLayout(1, 2, 15, 0));
+        JPanel contentPanel = new JPanel(new BorderLayout());
 
         // Panel affaires
         JPanel affairesPanel = new JPanel(new BorderLayout());
         affairesPanel.setBorder(BorderFactory.createTitledBorder("Liste des affaires et personnes"));
-        panelAffaires = new JPanel(new GridLayout(0, 3, 10, 10));
-        affairesPanel.add(new JScrollPane(panelAffaires), BorderLayout.CENTER);
-        contentPanel.add(affairesPanel);
 
-        // Panel notifications
+        // Ajout des boutons de filtre ici
+        JPanel filterPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 5));
+        filterPanel.setBorder(BorderFactory.createEmptyBorder(5, 10, 10, 10));
+
+        btnAffaires = new JButton("Affaires");
+        btnPersonnes = new JButton("Personnes");
+
+        // Style initial
+        btnAffaires.setBackground(new Color(0, 120, 215));
+        btnAffaires.setForeground(Color.WHITE);
+        btnPersonnes.setBackground(new Color(0, 120, 215));
+        btnPersonnes.setForeground(Color.WHITE);
+
+        // Personnalisation des boutons
+        Dimension btnSize = new Dimension(120, 30);
+        btnAffaires.setPreferredSize(btnSize);
+        btnPersonnes.setPreferredSize(btnSize);
+
+        btnAffaires.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(Color.GRAY),
+                BorderFactory.createEmptyBorder(5, 10, 5, 10)
+        ));
+        btnPersonnes.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(Color.GRAY),
+                BorderFactory.createEmptyBorder(5, 10, 5, 10)
+        ));
+
+        // Gestion des clics
+        btnAffaires.addActionListener(e -> {
+            showAffaires = !showAffaires;
+            btnAffaires.setBackground(showAffaires ? new Color(0, 120, 215) : new Color(200, 200, 200));
+            btnAffaires.setForeground(showAffaires ? Color.WHITE : Color.BLACK);
+            refreshDisplay();
+        });
+
+        btnPersonnes.addActionListener(e -> {
+            showPersonnes = !showPersonnes;
+            btnPersonnes.setBackground(showPersonnes ? new Color(0, 120, 215) : new Color(200, 200, 200));
+            btnPersonnes.setForeground(showPersonnes ? Color.WHITE : Color.BLACK);
+            refreshDisplay();
+        });
+
+        filterPanel.add(btnAffaires);
+        filterPanel.add(Box.createHorizontalStrut(10));
+        filterPanel.add(btnPersonnes);
+
+        affairesPanel.add(filterPanel, BorderLayout.NORTH);
+
+        // Panel de contenu principal (inchangé)
+        panelAffaires = new JPanel();
+        panelAffaires.setLayout(new BoxLayout(panelAffaires, BoxLayout.Y_AXIS));
+        panelAffaires.setBackground(Color.WHITE);
+
+        JScrollPane scrollPane = new JScrollPane(panelAffaires);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        affairesPanel.add(scrollPane, BorderLayout.CENTER);
+
+        // Panel notifications (inchangé)
         JPanel notifPanel = new JPanel(new BorderLayout());
         notifPanel.setBorder(BorderFactory.createTitledBorder("Notifications"));
         JPanel notices = new JPanel();
         notices.setLayout(new BoxLayout(notices, BoxLayout.Y_AXIS));
 
-        // Exemples de notifications
         String[] notifs = {
                 "Ajout d'un délit mineur|9:00 AM|Un boulanger signale le vol répété de baguettes",
                 "Affaire urgente|10:30 AM|Un quartier entier devient silencieux pendant 60 minutes",
@@ -113,36 +194,51 @@ public class AffaireView extends JFrame {
         }
 
         notifPanel.add(new JScrollPane(notices), BorderLayout.CENTER);
-        contentPanel.add(notifPanel);
 
+        // Split pane (inchangé)
+        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, affairesPanel, notifPanel);
+        splitPane.setResizeWeight(0.7);
+        splitPane.setDividerLocation(0.7);
+
+        contentPanel.add(splitPane, BorderLayout.CENTER);
         dashboard.add(contentPanel, BorderLayout.CENTER);
         mainPanel.add(dashboard, BorderLayout.CENTER);
     }
 
-    private void loadData() {
-        displayAffaires();
-        displayPersonnes();
+    private void refreshDisplay() {
+        panelAffaires.removeAll();
+
+        if (showAffaires) displayAffaires();
+        if (showPersonnes) displayPersonnes();
+
+        panelAffaires.add(Box.createVerticalGlue());
+        panelAffaires.revalidate();
+        panelAffaires.repaint();
     }
 
     private void displayAffaires() {
         controller.getAffaires().forEach(affaire -> {
-            JPanel card = createCard(
-                    affaire.getNomAffaire(),
-                    "Crime: " + affaire.getCrime() + "\nLieu: " + affaire.getLieu(),
-                    Color.LIGHT_GRAY
-            );
+            String details = String.format(
+                    "<html><b>Crime:</b> %s<br><b>Lieu:</b> %s<br><b>État:</b> %s<br><b>Date:</b> %s</html>",
+                    affaire.getCrime(), affaire.getLieu(), affaire.getEtat(), affaire.getDate());
+
+            JPanel card = createCard(affaire.getNomAffaire(), details, Color.LIGHT_GRAY);
+            card.setAlignmentX(Component.LEFT_ALIGNMENT);
             panelAffaires.add(card);
+            panelAffaires.add(Box.createRigidArea(new Dimension(0, 10)));
         });
     }
 
     private void displayPersonnes() {
         controller.getPersonnes().forEach(personne -> {
-            JPanel card = createCard(
-                    personne.getNomComplet(),
-                    "Profession: " + personne.getProfession() + "\nQuartier: " + personne.getQuartier(),
-                    new Color(220, 240, 255)
-            );
+            String details = String.format(
+                    "<html><b>Profession:</b> %s<br><b>Quartier:</b> %s<br><b>Âge:</b> %s<br><b>Antécédents:</b> %s</html>",
+                    personne.getProfession(), personne.getQuartier(), personne.getage(), personne.getAntecedents());
+
+            JPanel card = createCard(personne.getNomComplet(), details, new Color(220, 240, 255));
+            card.setAlignmentX(Component.LEFT_ALIGNMENT);
             panelAffaires.add(card);
+            panelAffaires.add(Box.createRigidArea(new Dimension(0, 10)));
         });
     }
 
@@ -151,29 +247,52 @@ public class AffaireView extends JFrame {
         panelAffaires.removeAll();
 
         if (query.isEmpty()) {
-            loadData();
+            refreshDisplay();
             return;
         }
 
-        // Recherche dans les affaires
-        controller.getAffaires().stream()
-                .filter(a -> a.getNomAffaire().toLowerCase().contains(query))
-                .forEach(a -> panelAffaires.add(createCard(a.getNomAffaire(), "Affaire", Color.LIGHT_GRAY)));
+        if (showAffaires) {
+            controller.getAffaires().stream()
+                    .filter(a -> a.getNomAffaire().toLowerCase().contains(query) ||
+                            a.getCrime().toLowerCase().contains(query) ||
+                            a.getLieu().toLowerCase().contains(query))
+                    .forEach(a -> {
+                        String details = String.format(
+                                "<html><b>Crime:</b> %s<br><b>Lieu:</b> %s<br><b>État:</b> %s</html>",
+                                a.getCrime(), a.getLieu(), a.getEtat());
+                        JPanel card = createCard(a.getNomAffaire(), details, Color.LIGHT_GRAY);
+                        card.setAlignmentX(Component.LEFT_ALIGNMENT);
+                        panelAffaires.add(card);
+                        panelAffaires.add(Box.createRigidArea(new Dimension(0, 10)));
+                    });
+        }
 
-        // Recherche dans les personnes
-        controller.getPersonnes().stream()
-                .filter(p -> p.getNomComplet().toLowerCase().contains(query))
-                .forEach(p -> panelAffaires.add(createCard(p.getNomComplet(), "Personne", new Color(220, 240, 255))));
+        if (showPersonnes) {
+            controller.getPersonnes().stream()
+                    .filter(p -> p.getNomComplet().toLowerCase().contains(query) ||
+                            p.getProfession().toLowerCase().contains(query) ||
+                            p.getQuartier().toLowerCase().contains(query))
+                    .forEach(p -> {
+                        String details = String.format(
+                                "<html><b>Profession:</b> %s<br><b>Quartier:</b> %s<br><b>Âge:</b> %s</html>",
+                                p.getProfession(), p.getQuartier(), p.getage());
+                        JPanel card = createCard(p.getNomComplet(), details, new Color(220, 240, 255));
+                        card.setAlignmentX(Component.LEFT_ALIGNMENT);
+                        panelAffaires.add(card);
+                        panelAffaires.add(Box.createRigidArea(new Dimension(0, 10)));
+                    });
+        }
 
         if (panelAffaires.getComponentCount() == 0) {
-            panelAffaires.add(new JLabel("Aucun résultat trouvé", SwingConstants.CENTER));
+            JLabel noResult = new JLabel("Aucun résultat trouvé", SwingConstants.CENTER);
+            noResult.setAlignmentX(Component.CENTER_ALIGNMENT);
+            panelAffaires.add(noResult);
         }
 
         panelAffaires.revalidate();
         panelAffaires.repaint();
     }
 
-    // Méthodes utilitaires
     private JButton createIconButton(String text, Color color) {
         JButton btn = new JButton(text);
         btn.setBackground(color);
@@ -239,20 +358,26 @@ public class AffaireView extends JFrame {
 
     private JPanel createCard(String title, String details, Color bgColor) {
         JPanel card = new JPanel(new BorderLayout());
-        card.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+        card.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(Color.GRAY),
+                BorderFactory.createEmptyBorder(10, 10, 10, 10)
+        ));
         card.setBackground(bgColor);
-        card.setPreferredSize(new Dimension(200, 120));
+        card.setPreferredSize(new Dimension(250, 150));
 
         JLabel titleLabel = new JLabel(title, SwingConstants.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 14));
+        titleLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
 
-        JTextArea detailsArea = new JTextArea(details);
-        detailsArea.setEditable(false);
-        detailsArea.setBackground(bgColor);
-        detailsArea.setLineWrap(true);
+        JEditorPane detailsPane = new JEditorPane();
+        detailsPane.setContentType("text/html");
+        detailsPane.setText(details);
+        detailsPane.setEditable(false);
+        detailsPane.setBackground(bgColor);
+        detailsPane.setBorder(null);
 
         card.add(titleLabel, BorderLayout.NORTH);
-        card.add(detailsArea, BorderLayout.CENTER);
+        card.add(new JScrollPane(detailsPane), BorderLayout.CENTER);
         return card;
     }
 }

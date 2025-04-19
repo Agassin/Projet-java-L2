@@ -1,4 +1,4 @@
-package src.model;
+package src.Model;
 
 public class Affaire {
     private String nomAffaire;
@@ -47,5 +47,9 @@ public class Affaire {
 
     public String getCrime() {
         return this.crime;
+    }
+
+    public Object getDate() {
+        return this.date;
     }
 }
