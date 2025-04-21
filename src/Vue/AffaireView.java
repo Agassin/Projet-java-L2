@@ -1,8 +1,8 @@
-package src.Vue;
+package src.vue;
 
-import src.Controller.AffaireController;
-import src.Model.Affaire;
-import src.Model.Personne;
+import src.controller.AffaireController;
+import src.model.Affaire;
+import src.model.Personne;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
@@ -232,8 +232,8 @@ public class AffaireView extends JFrame {
     private void displayPersonnes() {
         controller.getPersonnes().forEach(personne -> {
             String details = String.format(
-                    "<html><b>Profession:</b> %s<br><b>Quartier:</b> %s<br><b>Âge:</b> %s<br><b>Antécédents:</b> %s</html>",
-                    personne.getProfession(), personne.getQuartier(), personne.getage(), personne.getAntecedents());
+                    "<html><b>Profession:</b> %s<br><b>Quartier:</b> %s<br><b>Antécédents:</b> %s</html>",
+                    personne.getProfession(), personne.getQuartier(), personne.getAntecedents());
 
             JPanel card = createCard(personne.getNomComplet(), details, new Color(220, 240, 255));
             card.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -275,7 +275,7 @@ public class AffaireView extends JFrame {
                     .forEach(p -> {
                         String details = String.format(
                                 "<html><b>Profession:</b> %s<br><b>Quartier:</b> %s<br><b>Âge:</b> %s</html>",
-                                p.getProfession(), p.getQuartier(), p.getage());
+                                p.getProfession(), p.getQuartier());
                         JPanel card = createCard(p.getNomComplet(), details, new Color(220, 240, 255));
                         card.setAlignmentX(Component.LEFT_ALIGNMENT);
                         panelAffaires.add(card);

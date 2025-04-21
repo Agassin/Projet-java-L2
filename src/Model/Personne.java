@@ -60,4 +60,6 @@ public class Personne {
     public String toString() {
         return getNomComplet() + " (" + profession + ", " + quartier + ")";
     }
+
+
 }
