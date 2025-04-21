@@ -36,7 +36,6 @@ public class AffaireView extends JFrame {
         setSize(1200, 900);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-
         mainPanel = new JPanel(new BorderLayout());
         mainPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
         add(mainPanel);
@@ -58,24 +57,25 @@ public class AffaireView extends JFrame {
     private void createHeader() {
         JPanel header = new JPanel(new BorderLayout());
         header.setBackground(new Color(240, 240, 240));
-        header.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+        header.setBorder(BorderFactory.createEmptyBorder(0, 20, 10, 20));
 
-        JLabel logo = new JLabel("GENDARMERIE NATIONALE", SwingConstants.LEFT);
-        logo.setFont(new Font("Arial", Font.BOLD, 18));
+        ImageIcon icon = new ImageIcon("images/Logo_gend.png");
+        Image scaledImage = icon.getImage().getScaledInstance(120, 70, Image.SCALE_SMOOTH);
+        JLabel logo = new JLabel(new ImageIcon(scaledImage), SwingConstants.LEFT);
         header.add(logo, BorderLayout.WEST);
 
-        JPanel searchPanel = new JPanel();
+        JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 40));
         searchField = new JTextField(25);
         searchField.setPreferredSize(new Dimension(300, 30));
         searchPanel.add(searchField);
         header.add(searchPanel, BorderLayout.CENTER);
 
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 15, 0));
-        JButton profileButton = createIconButton("Profil", new Color(0, 120, 215));
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 15, 40));
+        JButton profileButton = createIconButton("Profil", new Color(24, 75, 146));
         profileButton.addActionListener(e -> showProfile());
         buttonPanel.add(profileButton);
 
-        JButton notifButton = createIconButton("Notifications", new Color(100, 100, 100));
+        JButton notifButton = createIconButton2("Notifications", new Color(211, 211, 211));
         notifButton.addActionListener(e -> showNotifications());
         buttonPanel.add(notifButton);
 
@@ -97,9 +97,9 @@ public class AffaireView extends JFrame {
 
         JPanel statsPanel = new JPanel(new GridLayout(1, 4, 15, 15));
         statsPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
-        statsPanel.add(createStatCard("Affaires en cours", "5", "62%", new Color(76, 175, 80)));
-        statsPanel.add(createStatCard("Affaires classées", "2", "25%", new Color(33, 150, 243)));
-        statsPanel.add(createStatCard("Affaires urgentes", "1", "12%", new Color(244, 67, 54)));
+        statsPanel.add(createStatCard("Affaires en cours", "5 000", "62%", new Color(33, 150, 243)));
+        statsPanel.add(createStatCard("Affaires classées", "2 500", "25%", new Color(76, 175, 80)));
+        statsPanel.add(createStatCard("Affaires urgentes", "150", "12%", new Color(244, 67, 54)));
         statsPanel.add(createStatCard("Amendes à verser", "15 000", "€", new Color(255, 193, 7)));
         dashboard.add(statsPanel, BorderLayout.NORTH);
 
@@ -114,9 +114,9 @@ public class AffaireView extends JFrame {
         btnAffaires = new JButton("Affaires");
         btnPersonnes = new JButton("Personnes");
 
-        btnAffaires.setBackground(new Color(0, 120, 215));
+        btnAffaires.setBackground(new Color(24, 75, 146));
         btnAffaires.setForeground(Color.WHITE);
-        btnPersonnes.setBackground(new Color(0, 120, 215));
+        btnPersonnes.setBackground(new Color(24, 75, 146));
         btnPersonnes.setForeground(Color.WHITE);
 
         Dimension btnSize = new Dimension(120, 30);
@@ -134,14 +134,14 @@ public class AffaireView extends JFrame {
 
         btnAffaires.addActionListener(e -> {
             showAffaires = !showAffaires;
-            btnAffaires.setBackground(showAffaires ? new Color(0, 120, 215) : new Color(200, 200, 200));
+            btnAffaires.setBackground(showAffaires ? new Color(24, 75, 146) : new Color(200, 200, 200));
             btnAffaires.setForeground(showAffaires ? Color.WHITE : Color.BLACK);
             refreshDisplay();
         });
 
         btnPersonnes.addActionListener(e -> {
             showPersonnes = !showPersonnes;
-            btnPersonnes.setBackground(showPersonnes ? new Color(0, 120, 215) : new Color(200, 200, 200));
+            btnPersonnes.setBackground(showPersonnes ? new Color(24, 75, 146) : new Color(200, 200, 200));
             btnPersonnes.setForeground(showPersonnes ? Color.WHITE : Color.BLACK);
             refreshDisplay();
         });
@@ -375,6 +375,16 @@ public class AffaireView extends JFrame {
         JButton btn = new JButton(text);
         btn.setBackground(color);
         btn.setForeground(Color.WHITE);
+        btn.setFocusPainted(false);
+        btn.setBorderPainted(false);
+        btn.setOpaque(true);
+        return btn;
+    }
+
+    private JButton createIconButton2(String text, Color color) {
+        JButton btn = new JButton(text);
+        btn.setBackground(color);
+        btn.setForeground(new Color(24, 75, 146));
         btn.setFocusPainted(false);
         btn.setBorderPainted(false);
         btn.setOpaque(true);
