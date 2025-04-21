@@ -6,7 +6,6 @@ import src.vue.AffaireView;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -71,14 +70,14 @@ public class LoginView extends JFrame {
             JOptionPane.showMessageDialog(this, "Connexion réussie!",
                     "Succès", JOptionPane.INFORMATION_MESSAGE);
             dispose();
-            openMainApplication();
+            openMainApplication(username);
         } else {
             JOptionPane.showMessageDialog(this, "Identifiants incorrects",
                     "Erreur", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    private void openMainApplication() {
+    private void openMainApplication(String username) {
         SwingUtilities.invokeLater(() -> {
             AffaireController controller = new AffaireController();
             // Ajout des affaires par défaut
@@ -86,7 +85,7 @@ public class LoginView extends JFrame {
             controller.ajouterAffaire(new Affaire("Affaire 2", "Fraude", null, null, "Lyon", "Fermé", "2023-02-01"));
             controller.ajouterAffaire(new Affaire("Affaire 3", "Cambriolage", null, null, "Marseille", "En cours", "2023-03-01"));
 
-            AffaireView mainView = new AffaireView(controller);
+            AffaireView mainView = new AffaireView(controller, username);
             mainView.setVisible(true);
         });
     }

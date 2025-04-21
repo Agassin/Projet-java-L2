@@ -12,17 +12,23 @@ import java.util.Objects;
 
 public class AffaireView extends JFrame {
     private final AffaireController controller;
+    private final String username;
     private JPanel mainPanel;
+    private JPanel contentPanel;
+    private JPanel dashboardPanel;
+    private JPanel profilePanel;
+    private JPanel notificationsPanel;
     private JTextField searchField;
     private JPanel panelAffaires;
     private JButton btnAffaires, btnPersonnes;
     private boolean showAffaires = true;
     private boolean showPersonnes = true;
 
-    public AffaireView(AffaireController controller) {
+    public AffaireView(AffaireController controller, String username) {
         this.controller = Objects.requireNonNull(controller, "Controller ne peut pas être null");
+        this.username = username;
         initUI();
-        refreshDisplay();
+        showDashboard();
     }
 
     private void initUI() {
@@ -37,8 +43,16 @@ public class AffaireView extends JFrame {
 
         createHeader();
 
+        contentPanel = new JPanel(new CardLayout());
+        dashboardPanel = createDashboard();
+        profilePanel = createProfilePanel();
+        notificationsPanel = createNotificationsPanel();
 
-        createDashboard();
+        contentPanel.add(dashboardPanel, "dashboard");
+        contentPanel.add(profilePanel, "profile");
+        contentPanel.add(notificationsPanel, "notifications");
+
+        mainPanel.add(contentPanel, BorderLayout.CENTER);
     }
 
     private void createHeader() {
@@ -46,28 +60,30 @@ public class AffaireView extends JFrame {
         header.setBackground(new Color(240, 240, 240));
         header.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
 
-        // Logo
         JLabel logo = new JLabel("GENDARMERIE NATIONALE", SwingConstants.LEFT);
         logo.setFont(new Font("Arial", Font.BOLD, 18));
         header.add(logo, BorderLayout.WEST);
 
-        // Barre de recherche
         JPanel searchPanel = new JPanel();
         searchField = new JTextField(25);
         searchField.setPreferredSize(new Dimension(300, 30));
         searchPanel.add(searchField);
         header.add(searchPanel, BorderLayout.CENTER);
 
-        // Boutons
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 15, 0));
-        buttonPanel.add(createIconButton("Profil", new Color(0, 120, 215)));
-        buttonPanel.add(createIconButton("Notifications", new Color(100, 100, 100)));
+        JButton profileButton = createIconButton("Profil", new Color(0, 120, 215));
+        profileButton.addActionListener(e -> showProfile());
+        buttonPanel.add(profileButton);
+
+        JButton notifButton = createIconButton("Notifications", new Color(100, 100, 100));
+        notifButton.addActionListener(e -> showNotifications());
+        buttonPanel.add(notifButton);
+
         buttonPanel.add(createIconButton("Paramètres", new Color(200, 0, 0)));
         header.add(buttonPanel, BorderLayout.EAST);
 
         mainPanel.add(header, BorderLayout.NORTH);
 
-        // Ecouteur recherche
         searchField.getDocument().addDocumentListener(new DocumentListener() {
             @Override public void insertUpdate(DocumentEvent e) { search(); }
             @Override public void removeUpdate(DocumentEvent e) { search(); }
@@ -75,32 +91,10 @@ public class AffaireView extends JFrame {
         });
     }
 
-
-    private void toggleFilter(JButton button, Runnable toggleAction) {
-        toggleAction.run();
-        button.setBackground(button.getBackground() == new Color(0, 120, 215)
-                ? new Color(200, 200, 200)
-                : new Color(0, 120, 215));
-        button.setForeground(button.getForeground() == Color.WHITE ? Color.BLACK : Color.WHITE);
-        refreshDisplay();
-    }
-
-    private JButton createFilterButton(String text) {
-        JButton btn = new JButton(text);
-        btn.setPreferredSize(new Dimension(100, 30));
-        btn.setFocusPainted(false);
-        btn.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(Color.GRAY),
-                BorderFactory.createEmptyBorder(5, 15, 5, 15)
-        ));
-        return btn;
-    }
-
-    private void createDashboard() {
+    private JPanel createDashboard() {
         JPanel dashboard = new JPanel(new BorderLayout());
         dashboard.setBorder(new EmptyBorder(10, 20, 20, 20));
 
-        // Cartes stats (inchangé)
         JPanel statsPanel = new JPanel(new GridLayout(1, 4, 15, 15));
         statsPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
         statsPanel.add(createStatCard("Affaires en cours", "5", "62%", new Color(76, 175, 80)));
@@ -109,27 +103,22 @@ public class AffaireView extends JFrame {
         statsPanel.add(createStatCard("Amendes à verser", "15 000", "€", new Color(255, 193, 7)));
         dashboard.add(statsPanel, BorderLayout.NORTH);
 
-        // Contenu principal
-        JPanel contentPanel = new JPanel(new BorderLayout());
+        JPanel content = new JPanel(new BorderLayout());
 
-        // Panel affaires
         JPanel affairesPanel = new JPanel(new BorderLayout());
         affairesPanel.setBorder(BorderFactory.createTitledBorder("Liste des affaires et personnes"));
 
-        // Ajout des boutons de filtre ici
         JPanel filterPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 5));
         filterPanel.setBorder(BorderFactory.createEmptyBorder(5, 10, 10, 10));
 
         btnAffaires = new JButton("Affaires");
         btnPersonnes = new JButton("Personnes");
 
-        // Style initial
         btnAffaires.setBackground(new Color(0, 120, 215));
         btnAffaires.setForeground(Color.WHITE);
         btnPersonnes.setBackground(new Color(0, 120, 215));
         btnPersonnes.setForeground(Color.WHITE);
 
-        // Personnalisation des boutons
         Dimension btnSize = new Dimension(120, 30);
         btnAffaires.setPreferredSize(btnSize);
         btnPersonnes.setPreferredSize(btnSize);
@@ -143,7 +132,6 @@ public class AffaireView extends JFrame {
                 BorderFactory.createEmptyBorder(5, 10, 5, 10)
         ));
 
-        // Gestion des clics
         btnAffaires.addActionListener(e -> {
             showAffaires = !showAffaires;
             btnAffaires.setBackground(showAffaires ? new Color(0, 120, 215) : new Color(200, 200, 200));
@@ -164,7 +152,6 @@ public class AffaireView extends JFrame {
 
         affairesPanel.add(filterPanel, BorderLayout.NORTH);
 
-        // Panel de contenu principal (inchangé)
         panelAffaires = new JPanel();
         panelAffaires.setLayout(new BoxLayout(panelAffaires, BoxLayout.Y_AXIS));
         panelAffaires.setBackground(Color.WHITE);
@@ -173,9 +160,8 @@ public class AffaireView extends JFrame {
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         affairesPanel.add(scrollPane, BorderLayout.CENTER);
 
-        // Panel notifications (inchangé)
         JPanel notifPanel = new JPanel(new BorderLayout());
-        notifPanel.setBorder(BorderFactory.createTitledBorder("Notifications"));
+        notifPanel.setBorder(BorderFactory.createTitledBorder("actus"));
         JPanel notices = new JPanel();
         notices.setLayout(new BoxLayout(notices, BoxLayout.Y_AXIS));
 
@@ -195,14 +181,106 @@ public class AffaireView extends JFrame {
 
         notifPanel.add(new JScrollPane(notices), BorderLayout.CENTER);
 
-        // Split pane (inchangé)
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, affairesPanel, notifPanel);
         splitPane.setResizeWeight(0.7);
         splitPane.setDividerLocation(0.7);
 
-        contentPanel.add(splitPane, BorderLayout.CENTER);
-        dashboard.add(contentPanel, BorderLayout.CENTER);
-        mainPanel.add(dashboard, BorderLayout.CENTER);
+        content.add(splitPane, BorderLayout.CENTER);
+        dashboard.add(content, BorderLayout.CENTER);
+
+        return dashboard;
+    }
+
+    private JPanel createProfilePanel() {
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.setBorder(new EmptyBorder(20, 20, 20, 20));
+
+        JPanel profileInfoPanel = new JPanel();
+        profileInfoPanel.setLayout(new BoxLayout(profileInfoPanel, BoxLayout.Y_AXIS));
+        profileInfoPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+        JLabel titleLabel = new JLabel("Profil Utilisateur", SwingConstants.CENTER);
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        titleLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
+
+        JLabel usernameLabel = new JLabel("Identifiant: " + username);
+        usernameLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+
+        JLabel nameLabel = new JLabel("Nom: ADMINISTRATEUR");
+        nameLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+
+        JLabel roleLabel = new JLabel("Rôle: Administrateur système");
+        roleLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+
+        JLabel lastLoginLabel = new JLabel("Dernière connexion: " + new java.util.Date());
+        lastLoginLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+        lastLoginLabel.setForeground(Color.GRAY);
+
+        JButton backButton = new JButton("Retour au tableau de bord");
+        backButton.setBackground(new Color(0, 120, 215));
+        backButton.setForeground(Color.WHITE);
+        backButton.addActionListener(e -> showDashboard());
+
+        profileInfoPanel.add(titleLabel);
+        profileInfoPanel.add(Box.createRigidArea(new Dimension(0, 20)));
+        profileInfoPanel.add(usernameLabel);
+        profileInfoPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+        profileInfoPanel.add(nameLabel);
+        profileInfoPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+        profileInfoPanel.add(roleLabel);
+        profileInfoPanel.add(Box.createRigidArea(new Dimension(0, 20)));
+        profileInfoPanel.add(lastLoginLabel);
+        profileInfoPanel.add(Box.createRigidArea(new Dimension(0, 30)));
+        profileInfoPanel.add(backButton);
+
+        panel.add(profileInfoPanel, BorderLayout.CENTER);
+        return panel;
+    }
+
+    private JPanel createNotificationsPanel() {
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.setBorder(new EmptyBorder(20, 20, 20, 20));
+
+        JPanel notifContentPanel = new JPanel();
+        notifContentPanel.setLayout(new BoxLayout(notifContentPanel, BoxLayout.Y_AXIS));
+        notifContentPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+        JLabel titleLabel = new JLabel("Notifications", SwingConstants.CENTER);
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        titleLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
+
+        JLabel noNotifLabel = new JLabel("Aucune nouvelle notification", SwingConstants.CENTER);
+        noNotifLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+        noNotifLabel.setForeground(Color.GRAY);
+
+        JButton backButton = new JButton("Retour au tableau de bord");
+        backButton.setBackground(new Color(0, 120, 215));
+        backButton.setForeground(Color.WHITE);
+        backButton.addActionListener(e -> showDashboard());
+
+        notifContentPanel.add(titleLabel);
+        notifContentPanel.add(Box.createRigidArea(new Dimension(0, 20)));
+        notifContentPanel.add(noNotifLabel);
+        notifContentPanel.add(Box.createRigidArea(new Dimension(0, 30)));
+        notifContentPanel.add(backButton);
+
+        panel.add(notifContentPanel, BorderLayout.CENTER);
+        return panel;
+    }
+
+    private void showDashboard() {
+        CardLayout cl = (CardLayout)(contentPanel.getLayout());
+        cl.show(contentPanel, "dashboard");
+    }
+
+    private void showProfile() {
+        CardLayout cl = (CardLayout)(contentPanel.getLayout());
+        cl.show(contentPanel, "profile");
+    }
+
+    private void showNotifications() {
+        CardLayout cl = (CardLayout)(contentPanel.getLayout());
+        cl.show(contentPanel, "notifications");
     }
 
     private void refreshDisplay() {
