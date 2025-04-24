@@ -1,7 +1,7 @@
-package src.controller;
+package src.Controller;
 
-import src.model.Affaire;
-import src.model.Personne;
+import src.Model.Affaire;
+import src.Model.Personne;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 import java.io.FileReader;
@@ -116,5 +116,24 @@ public class AffaireController {
                         },
                         () -> System.out.println("Affaire non trouvée")
                 );
+    }
+    public lienAffaire trouverPersonnesLiees(Affaire affaire) {
+
+        List<Personne> quartierList = new ArrayList<>();
+        List<Personne> casierList = new ArrayList<>();
+
+        String lieuAffaire = affaire.getLieu();         // ex: "Rocade"
+        String crimeAffaire = affaire.getCrime();       // ex: "Vol"
+
+        for (Personne p : personnes) {
+            if (p.getQuartier().equalsIgnoreCase(lieuAffaire)) {
+                quartierList.add(p);
+            }
+            if (p.getAntecedents().equalsIgnoreCase(crimeAffaire)) {
+                casierList.add(p);
+            }
+        }
+
+        return new lienAffaire(affaire,quartierList,casierList);
     }
 }

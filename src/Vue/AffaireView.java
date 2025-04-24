@@ -1,8 +1,8 @@
-package src.vue;
+package src.Vue;
 
-import src.controller.AffaireController;
-import src.model.Affaire;
-import src.model.Personne;
+import src.Controller.AffaireController;
+import src.Model.Affaire;
+import src.Model.Personne;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;

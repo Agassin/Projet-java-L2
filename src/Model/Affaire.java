@@ -1,4 +1,4 @@
-package src.model;
+package src.Model;
 
 public class Affaire {
     private String nomAffaire;

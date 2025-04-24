@@ -1,4 +1,4 @@
-package src.model;
+package src.Model;
 import java.util.ArrayList;
 
 public class Personne {
