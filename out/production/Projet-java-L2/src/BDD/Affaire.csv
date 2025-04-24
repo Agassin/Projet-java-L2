@@ -2,20 +2,20 @@ Nom_Affaire,Crime,Suspect,Coupable,Lieu,Etat,Date
 Affaire 1,Vol,Manon Bernard,,Madeleine,En cours,2023-11-04
 Affaire 2,Trafic de drogue,Alexandre Lemoine,Alexandre Lemoine,Rayssac,Fermée,2016-03-25
 Affaire 3,Meurtre,Jean Lemoine,Jean Lemoine,Centre-Ville,Fermée,2020-12-07
-Affaire 4,Escroquerie,Thomas Bernard,Thomas Bernard,Veyrières,En cours,2019-07-17
-Affaire 5,Fraude,Nicolas Bernard,,Rayssac,Fermée,2020-03-01
+Affaire 4,Escroquerie,Thomas Bernard,,Veyrières,En cours,2019-07-17
+Affaire 5,Fraude,Nicolas Bernard,Nicolad Bernard,Rayssac,Fermée,2020-03-01
 Affaire 6,Escroquerie,Jean Martin,,Veyrières,En cours,2015-09-13
 Affaire 7,Fraude,Sophie Martin,Sophie Martin,Rayssac,Fermée,2017-04-28
-Affaire 8,Meurtre,Hugo Fournier,Hugo Fournier,Rayssac,En cours,2015-02-06
+Affaire 8,Meurtre,Hugo Fournier,,Rayssac,En cours,2015-02-06
 Affaire 9,Escroquerie,Pierre Lemoine,,Rocade,En cours,2017-11-11
 Affaire 10,Trafic de drogue,Laura Lemoine,Laura Lemoine,Cantepau,En cours,2018-01-08
 Affaire 11,Escroquerie,Sophie Fournier,Sophie Fournier,Madeleine,Fermée,2015-11-21
-Affaire 12,Fraude,Emma Morel,Emma Morel,Veyrières,En cours,2025-11-20
-Affaire 13,Vol,Alexandre Durand,,Veyrières,Fermée,2017-07-06
-Affaire 14,Cambriolage,Claire Fournier,Claire Fournier,Madeleine,En cours,2024-12-01
-Affaire 15,Trafic de drogue,Thomas Lemoine,Thomas Lemoine,Centre-Ville,En cours,2017-12-22
-Affaire 16,Meurtre,Paul Fournier,Paul Fournier,Lapanouse,En cours,2023-05-19
+Affaire 12,Fraude,Emma Morel,,Veyrières,En cours,2025-11-20
+Affaire 13,Vol,Alexandre Durand,Alexandre Durand,Veyrières,Fermée,2017-07-06
+Affaire 14,Cambriolage,Claire Fournier,,Madeleine,En cours,2024-12-01
+Affaire 15,Trafic de drogue,Thomas Lemoine,,Centre-Ville,En cours,2017-12-22
+Affaire 16,Meurtre,Paul Fournier,,Lapanouse,En cours,2023-05-19
 Affaire 17,Vol,Jean Durand,,Centre-Ville,En cours,2021-07-08
 Affaire 18,Vol,Julie Dubois,Julie Dubois,Centre-Ville,En cours,2023-08-08
 Affaire 19,Meurtre,Elise Durand,Elise Durand,Lapanouse,Fermée,2024-03-15
-Affaire 20,Trafic de drogue,Alexandre Girard,Alexandre Girard,Centre-Ville,En cours,2016-11-04
+Affaire 20,Trafic de drogue,Alexandre Girard,,Centre-Ville,En cours,2016-11-04

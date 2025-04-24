@@ -1,7 +1,7 @@
-package src.Controller;
+package src.controller;
 
-import src.Model.Affaire;
-import src.Model.Personne;
+import src.model.Affaire;
+import src.model.Personne;
 import java.util.List;
 
 public class lienAffaire {

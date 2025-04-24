@@ -1,8 +1,8 @@
 package src.fonction_supp;
 
-import src.Controller.AffaireController;
-import src.Model.Affaire;
-import src.Vue.AffaireView;
+import src.controller.AffaireController;
+import src.model.Affaire;
+import src.vue.AffaireView;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
