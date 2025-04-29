@@ -118,15 +118,29 @@ public class AffaireView extends JFrame {
 
         btnAffaires = new JButton("Affaires");
         btnPersonnes = new JButton("Personnes");
+        JButton btnAjouter = new JButton("Ajouter");
+        JButton btnModifier = new JButton("Modifier");
+        JButton btnSupprimer = new JButton("Supprimer");
 
         btnAffaires.setBackground(new Color(24, 75, 146));
         btnAffaires.setForeground(Color.WHITE);
         btnPersonnes.setBackground(new Color(24, 75, 146));
         btnPersonnes.setForeground(Color.WHITE);
 
+
+        btnAjouter.setBackground(new Color(34, 139, 34)); // Vert
+        btnAjouter.setForeground(Color.WHITE);
+        btnModifier.setBackground(new Color(218, 165, 32)); // Or
+        btnModifier.setForeground(Color.WHITE);
+        btnSupprimer.setBackground(new Color(220, 20, 60)); // Rouge
+        btnSupprimer.setForeground(Color.WHITE);
+
         Dimension btnSize = new Dimension(120, 30);
         btnAffaires.setPreferredSize(btnSize);
         btnPersonnes.setPreferredSize(btnSize);
+        btnAjouter.setPreferredSize(btnSize);
+        btnModifier.setPreferredSize(btnSize);
+        btnSupprimer.setPreferredSize(btnSize);
 
         btnAffaires.addActionListener(e -> {
             showAffaires = !showAffaires;
@@ -142,9 +156,19 @@ public class AffaireView extends JFrame {
             refreshDisplay();
         });
 
+        btnAjouter.addActionListener(e -> ajouterElement());
+        btnModifier.addActionListener(e -> modifierElement());
+        btnSupprimer.addActionListener(e -> supprimerElement());
+
         filterPanel.add(btnAffaires);
         filterPanel.add(Box.createHorizontalStrut(10));
         filterPanel.add(btnPersonnes);
+        filterPanel.add(Box.createHorizontalStrut(20)); // Espacement supplémentaire
+        filterPanel.add(btnAjouter);
+        filterPanel.add(Box.createHorizontalStrut(10));
+        filterPanel.add(btnModifier);
+        filterPanel.add(Box.createHorizontalStrut(10));
+        filterPanel.add(btnSupprimer);
 
         affairesPanel.add(filterPanel, BorderLayout.NORTH);
 
@@ -185,6 +209,48 @@ public class AffaireView extends JFrame {
         dashboard.add(content, BorderLayout.CENTER);
 
         return dashboard;
+    }
+
+    private void ajouterElement() {
+        if (showAffaires) {
+            // Logique pour ajouter une nouvelle affaire
+            JOptionPane.showMessageDialog(this,
+                    "Fonctionnalité d'ajout d'affaire à implémenter",
+                    "Ajouter", JOptionPane.INFORMATION_MESSAGE);
+        } else if (showPersonnes) {
+            // Logique pour ajouter une nouvelle personne
+            JOptionPane.showMessageDialog(this,
+                    "Fonctionnalité d'ajout de personne à implémenter",
+                    "Ajouter", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
+
+    private void modifierElement() {
+        if (showAffaires) {
+            // Logique pour modifier une affaire existante
+            JOptionPane.showMessageDialog(this,
+                    "Fonctionnalité de modification d'affaire à implémenter",
+                    "Modifier", JOptionPane.INFORMATION_MESSAGE);
+        } else if (showPersonnes) {
+            // Logique pour modifier une personne existante
+            JOptionPane.showMessageDialog(this,
+                    "Fonctionnalité de modification de personne à implémenter",
+                    "Modifier", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
+
+    private void supprimerElement() {
+        if (showAffaires) {
+            // Logique pour supprimer une affaire
+            JOptionPane.showMessageDialog(this,
+                    "Fonctionnalité de suppression d'affaire à implémenter",
+                    "Supprimer", JOptionPane.INFORMATION_MESSAGE);
+        } else if (showPersonnes) {
+            // Logique pour supprimer une personne
+            JOptionPane.showMessageDialog(this,
+                    "Fonctionnalité de suppression de personne à implémenter",
+                    "Supprimer", JOptionPane.INFORMATION_MESSAGE);
+        }
     }
 
     private JPanel createProfilePanel() {
