@@ -1,81 +1,82 @@
-Identifiant,Nom,Prénom,Genre,Age,Quartier,Profession,Affaire,Casier Judiciaire,Liens Potentiels
+Identifiant,Nom,Prénom,Genre,Age,Quartier,Profession,Affaire,antecedents,Description Crime
 1245,Bernard,Nicolas,Homme,25,Rayssac,Ingénieur,Affaire 5,Vierge,
-1246,Fournier,Julie,Femme,25,Veyrières,Infirmier,,Cambriolage,
-1247,Bernard,Elise,Femme,21,Rocade,Sans emploi,,Meurtre,
-1248,Lemoine,Paul,Homme,28,Centre-Ville,Sans emploi,,Fraude,
-1249,Dubois,Jean,Homme,42,Madeleine,Commerçant,,Escroquerie,
-1250,Dubois,Sophie,Femme,20,Rocade,Policier,,Fraude,
+1246,Fournier,Julie,Femme,25,Veyrières,Infirmier,,Cambriolage,A été surpris en train de forcer la porte arrière d’un commerce en pleine nuit.
+1247,Bernard,Elise,Femme,21,Rocade,Sans emploi,,Meurtre,A tendu une embuscade mortelle à un rival d'affaires.
+1248,Lemoine,Paul,Homme,28,Centre-Ville,Sans emploi,,Fraude,A fait usage de faux bulletins de salaire pour obtenir un crédit immobilier.
+1249,Dubois,Jean,Homme,42,Madeleine,Commerçant,,Escroquerie,A organisé une loterie fictive pour extorquer des fonds à des participants.
+1250,Dubois,Sophie,Femme,20,Rocade,Policier,,Fraude,A vendu des abonnements inexistants à des centaines de victimes en ligne.
 1251,Durand,Alexandre,Homme,27,Madeleine,Boulanger,Affaire 13,Vierge,
 1252,Martin,Jean,Homme,65,Madeleine,Commerçant,Affaire 6,Vierge,
-1253,Rousseau,Thomas,Homme,44,Rayssac,Ingénieur,,Vol,
-1254,Morel,Julie,Femme,51,Lapanouse,Boulanger,,Trafic de drogue,
-1255,Durand,Laura,Femme,38,Veyrières,Ingénieur,,Fraude,
-1256,Fournier,Sophie,Femme,51,Cantepau,Sans emploi,Affaire 11,Affaire 11,
-1257,Bernard,Julie,Femme,65,Cantepau,Enseignant,,Vol,
-1258,Rousseau,Manon,Femme,29,Centre-Ville,Ingénieur,,Fraude,
-1259,Lemoine,Claire,Femme,61,Cantepau,Enseignant,,Cambriolage,
-1260,Lemoine,Antoine,Homme,58,Lapanouse,Infirmier,,Escroquerie,
-1261,Durand,Marie,Femme,42,Centre-Ville,Boulanger,,Vol,
-1262,Bernard,Marie,Femme,59,Cantepau,Infirmier,,Fraude,
-1263,Durand,Camille,Femme,46,Veyrières,Boulanger,,Meurtre,
-1264,Bernard,Paul,Homme,55,Madeleine,Infirmier,,Trafic de drogue,
+1253,Rousseau,Thomas,Homme,44,Rayssac,Ingénieur,,Trafic de drogue,A transporté la marchandise à moto pour éviter les contrôles.
+1254,Morel,Julie,Femme,51,Lapanouse,Boulanger,,Trafic de drogue,A caché de la cocaïne dans des valises à double fond.
+1255,Durand,Laura,Femme,38,Veyrières,Ingénieur,,Fraude,A usurpé l'identité d’un collègue pour souscrire à un prêt.
+1256,Fournier,Sophie,Femme,51,Cantepau,Sans emploi,Affaire 11,
+1257,Bernard,Julie,Femme,65,Cantepau,Enseignant,,Escroquerie,A escroqué un hôpital en se faisant passer pour un fournisseur de matériel.
+1258,Rousseau,Manon,Femme,29,Centre-Ville,Ingénieur,,Fraude,A simulé un handicap pour percevoir des aides financières.
+1259,Lemoine,Claire,Femme,61,Cantepau,Enseignant,,Cambriolage,A fracturé plusieurs maisons dans le quartier durant les vacances.
+1260,Lemoine,Antoine,Homme,58,Lapanouse,Infirmier,,Escroquerie,A fait croire à une urgence familiale pour extorquer de l'argent à des connaissances.
+1261,Durand,Marie,Femme,42,Centre-Ville,Boulanger,,Vol,A volé des médicaments dans une pharmacie de garde.
+1262,Bernard,Marie,Femme,59,Cantepau,Infirmier,,Fraude,A manipulé les comptes de son entreprise pour échapper à l’impôt.
+1263,Lemoine,Jean,Homme,46,Veyrières,Boulanger,,Meurtre,A abattu sa compagne après une dispute conjugale.
+1264,Bernard,Paul,Homme,55,Madeleine,Infirmier,,Trafic de drogue,Importait des substances illicites dissimulées dans des colis postaux.
 1265,Martin,Luc,Homme,27,Rocade,Sans emploi,,Vierge,
-1266,Bernard,Alexandre,Homme,40,Rocade,Infirmier,,Vol,
-1267,Fournier,Sophie,Femme,32,Centre-Ville,Ingénieur,Affaire 11,Affaire 11,
+1266,Bernard,Alexandre,Homme,40,Rocade,Infirmier,,Vol,A fait diversion pendant qu’un complice volait les passants.
+1267,Fournier,Sophie,Femme,32,Centre-Ville,Ingénieur,Affaire 11,
 1268,Dubois,Claire,Femme,55,Cantepau,Enseignant,,Vierge,
-1269,Martin,Jean,Homme,38,Rayssac,Ingénieur,Affaire 6,Escroquerie,
-1270,Fournier,Nicolas,Homme,53,Veyrières,Policier,,Meurtre,
-1271,Fournier,Jean,Homme,54,Rayssac,Commerçant,,Fraude,
-1272,Bernard,Hugo,Homme,47,Centre-Ville,Boulanger,,Vol,
+1269,Martin,Jean,Homme,38,Rayssac,Ingénieur,Affaire 6,Escroquerie,A simulé une association caritative pour détourner des dons.
+1270,Fournier,Nicolas,Homme,53,Veyrières,Policier,,Meurtre,A poignardé la victime lors d’une altercation violente.
+1271,Fournier,Jean,Homme,54,Rayssac,Commerçant,,Fraude,A été condamné pour avoir falsifié des documents bancaires.
+1272,Bernard,Hugo,Homme,47,Centre-Ville,Boulanger,,Vol,A profité d’un attroupement pour subtiliser un portefeuille.
 1273,Martin,Hugo,Homme,28,Lapanouse,Ingénieur,,Vierge,
-1274,Fournier,Laura,Femme,22,Cantepau,Ingénieur,,Trafic de drogue,
-1275,Morel,Julie,Femme,62,Centre-Ville,Ingénieur,,Escroquerie,
-1276,Morel,Thomas,Homme,57,Madeleine,Commerçant,,Cambriolage,
-1277,Lemoine,Hugo,Homme,55,Cantepau,Boulanger,,Cambriolage,
+1274,Fournier,Laura,Femme,22,Cantepau,Ingénieur,,Trafic de drogue,A été pris en flagrant délit en train de revendre de la drogue devant un lycée.
+1275,Morel,Julie,Femme,62,Centre-Ville,Ingénieur,,Escroquerie,A utilisé de fausses identités pour contracter des crédits.
+1276,Morel,Thomas,Homme,57,Madeleine,Commerçant,,Cambriolage, S’est introduit discrètement par effraction dans une résidence pour y dérober des bijoux.
+1277,Lemoine,Hugo,Homme,55,Cantepau,Boulanger,,Cambriolage,A fracturé la serrure d’un bureau administratif pour y voler des documents.
 1278,Rousseau,Manon,Femme,64,Veyrières,Policier,,Vierge,
-1279,Morel,Sophie,Femme,54,Lapanouse,Commerçant,,Trafic de drogue,
-1280,Durand,Sophie,Femme,57,Rocade,Sans emploi,,Escroquerie,
-1281,Morel,Laura,Femme,25,Cantepau,Ingénieur,,Cambriolage,
-1282,Dubois,Antoine,Homme,61,Cantepau,Sans emploi,,Meurtre,
-1283,Morel,Paul,Homme,60,Rocade,Ingénieur,,Trafic de drogue,
-1284,Durand,Paul,Homme,44,Veyrières,Commerçant,,Vol,
-1285,Bernard,Laura,Femme,20,Lapanouse,Enseignant,,Vol,
-1286,Lemoine,Laura,Femme,65,Rocade,Ingénieur,Affaire 10,Affaire 10,
-1287,Dubois,Julie,Femme,21,Veyrières,Infirmier,Affaire 18,Affaire 18,
-1288,Dubois,Pierre,Homme,50,Rayssac,Sans emploi,,Fraude,
-1289,Durand,Camille,Femme,21,Centre-Ville,Commerçant,,Cambriolage,
-1290,Dubois,Nicolas,Homme,24,Lapanouse,Enseignant,,Cambriolage,
-1291,Fournier,Pierre,Homme,31,Rocade,Commerçant,,Vol,
+1279,Morel,Sophie,Femme,54,Lapanouse,Commerçant,,Trafic de drogue,A utilisé son domicile comme lieu de stockage pour une organisation criminelle.
+1280,Durand,Sophie,Femme,57,Rocade,Sans emploi,,Escroquerie,A mis en place une arnaque téléphonique ciblant des personnes âgées.
+1281,Morel,Laura,Femme,25,Cantepau,Ingénieur,,Cambriolage,A escaladé un balcon au troisième étage pour entrer dans un appartement.
+1282,Dubois,Antoine,Homme,61,Cantepau,Sans emploi,,Meurtre,A prémédité l’assassinat de son associé pour une question d’héritage.
+1283,Morel,Paul,Homme,60,Rocade,Ingénieur,,Trafic de drogue,A recruté des mineurs pour livrer les substances.
+1284,Durand,Paul,Homme,44,Veyrières,Commerçant,,Vol,A dérobé la caisse d’un food truck pendant l’heure de pointe.
+1285,Bernard,Laura,Femme,20,Lapanouse,Enseignant,,Vol,A volé les effets personnels des clients dans une salle de sport.
+1286,Lemoine,Laura,Femme,65,Rocade,Ingénieur,Affaire 10,
+1287,Morel,Emma,Femme,21,Rayssac,Chef d'entreprise,Affaire 12,
+1288,Dubois,Pierre,Homme,50,Rayssac,Sans emploi,,Fraude,A monté un réseau de fausses factures dans son entreprise.
+1289,Durand,Camille,Femme,21,Centre-Ville,Commerçant,,Cambriolage,A été filmé par les caméras de sécurité en train de dévaliser une bijouterie.
+1290,Dubois,Nicolas,Homme,24,Lapanouse,Enseignant,,Cambriolage,A utilisé un pied-de-biche pour forcer la serrure d’un entrepôt industriel.
+1291,Fournier,Pierre,Homme,31,Rocade,Commerçant,,Vol,A volé plusieurs objets de valeur dans les vestiaires d’un club de sport.
 1292,Bernard,Elise,Femme,27,Cantepau,Ingénieur,,Vierge,
-1293,Fournier,Laura,Femme,24,Veyrières,Sans emploi,,Trafic de drogue,
+1292,Colmer,Matheo,Homme,27,Lapanouse,sans Emploi,Affaire 15,Vierge,
+1293,Platal,Mehdi,Homme,36,Cantepau,Sans emploi,,Trafic de drogue,Gérait un point de vente clandestin dans un quartier sensible.
 1294,Morel,Pierre,Homme,61,Veyrières,Boulanger,,Vierge,
-1295,Morel,Marie,Femme,36,Cantepau,Sans emploi,,Escroquerie,
-1296,Girard,Camille,Femme,62,Veyrières,Commerçant,,Meurtre,
-1297,Dubois,Luc,Homme,56,Rocade,Policier,,Cambriolage,
-1298,Fournier,Sophie,Femme,62,Centre-Ville,Enseignant,Affaire 11,Affaire 11,
+1295,Morel,Marie,Femme,36,Cantepau,Sans emploi,,Escroquerie,A vendu des produits inexistants sur un site de petites annonces.
+1296,Girard,Camille,Femme,62,Veyrières,Commerçant,,Meurtre,A été arrêté après avoir abattu un passant lors d’un cambriolage qui a mal tourné.
+1297,Dubois,Luc,Homme,56,Rocade,Policier,,Cambriolage,A désactivé l’alarme de sécurité avant de pénétrer dans une villa isolée.
+1298,Fournier,Sophie,Femme,62,Centre-Ville,Enseignant,Affaire 11,
 1299,Morel,Elise,Femme,50,Rocade,Policier,,Vierge,
-1300,Rousseau,Sophie,Femme,37,Madeleine,Boulanger,,Vol,
+1300,Rousseau,Sophie,Femme,37,Madeleine,Boulanger,,Vol,A dérobé des sacs à main dans un centre commercial.
 1301,Lemoine,Pierre,Homme,60,Centre-Ville,Sans emploi,Affaire 9,Vierge,
-1302,Fournier,Julie,Femme,61,Lapanouse,Enseignant,,Fraude,
+1302,Fournier,Julie,Femme,61,Lapanouse,Enseignant,,Fraude,A escroqué plusieurs clients via une fausse entreprise de rénovation.
 1303,Lemoine,Julie,Femme,56,Veyrières,Policier,,Vierge,
-1304,Rousseau,Marie,Femme,30,Lapanouse,Policier,,Trafic de drogue,
-1305,Girard,Camille,Femme,64,Madeleine,Commerçant,,Vol,
-1306,Dubois,Nicolas,Homme,49,Cantepau,Ingénieur,,Escroquerie,
+1304,Rousseau,Marie,Femme,30,Lapanouse,Policier,,Trafic de drogue,Impliqué dans un réseau de distribution de drogues dures dans le centre-ville.
+1305,Girard,Camille,Femme,64,Madeleine,Commerçant,,Vol,A été pris en flagrant délit de vol à l’étalage.
+1306,Dubois,Nicolas,Homme,49,Cantepau,Ingénieur,,Escroquerie,A arnaqué des étudiants avec de faux logements en location.
 1307,Rousseau,Paul,Homme,33,Rocade,Sans emploi,,Vierge,
-1308,Lemoine,Elise,Femme,34,Lapanouse,Boulanger,,Cambriolage,
+1308,Lemoine,Elise,Femme,34,Lapanouse,Boulanger,,Cambriolage,A utilisé un tunnel creusé sous un magasin pour accéder à la réserve.
 1309,Bernard,Sophie,Femme,57,Rocade,Enseignant,,Vierge,
 1310,Lemoine,Emma,Femme,32,Rocade,Sans emploi,,Vierge,
-1311,Girard,Emma,Femme,61,Centre-Ville,Sans emploi,,Vierge,
+1311,Girard,Emma,Femme,61,Centre-Ville,Sans emploi,,Meurtre,A étranglé sa victime avec un câble électrique lors d’un cambriolage.
 1312,Girard,Jean,Homme,23,Cantepau,Sans emploi,,Vierge,
-1313,Martin,Alexandre,Homme,36,Madeleine,Sans emploi,,Vol,
-1314,Durand,Nicolas,Homme,62,Lapanouse,Sans emploi,,Escroquerie,
-1315,Bernard,Claire,Femme,47,Rayssac,Infirmier,,Meurtre,
-1316,Durand,Pierre,Homme,45,Rayssac,Ingénieur,,Vol,
-1317,Bernard,Claire,Femme,55,Rayssac,Infirmier,,Vol,
-1318,Girard,Manon,Femme,29,Madeleine,Policier,,Escroquerie,
+1313,Martin,Alexandre,Homme,36,Madeleine,Sans emploi,,Vol,A subtilisé des téléphones portables dans un train bondé.
+1314,Durand,Nicolas,Homme,62,Lapanouse,Sans emploi,,Escroquerie,A abusé de la confiance d’une vieille amie pour vider ses comptes.
+1315,Bernard,Claire,Femme,47,Rayssac,Infirmier,,Meurtre,A empoisonné un proche dans le but de récupérer son assurance vie.
+1316,Durand,Pierre,Homme,45,Rayssac,Ingénieur,,Vol,A volé une voiture garée.
+1317,Bernard,Claire,Femme,55,Rayssac,Infirmier,,Vol,A arraché une chaîne en or dans la rue avant de s’enfuir à vélo.
+1318,Girard,Manon,Femme,29,Madeleine,Policier,,Escroquerie,A fait croire qu’il collectait des dons pour une catastrophe humanitaire.
 1319,Martin,Claire,Femme,30,Rayssac,Boulanger,,Vierge,
 1320,Dubois,Alexandre,Homme,60,Lapanouse,Boulanger,,Vierge,
 1321,Dubois,Marie,Femme,21,Lapanouse,Sans emploi,,Vierge,
 1322,Martin,Manon,Femme,60,Centre-Ville,Boulanger,,Vierge,
-1323,Bernard,Jean,Homme,20,Lapanouse,Boulanger,,Trafic de drogue,
-1324,Rousseau,Elise,Femme,24,Veyrières,Policier,,Vol,
+1323,Bernard,Jean,Homme,20,Lapanouse,Boulanger,,Trafic de drogue,A été intercepté avec plusieurs kilos de stupéfiants dans le coffre de sa voiture.
+1324,Rousseau,Elise,Femme,24,Veyrières,Policier,,Vol,A ouvert discrètement des sacs dans les transports publics.
