@@ -397,55 +397,54 @@ public class AffaireView extends JFrame {
     }
 
     private void search() {
-        String query = searchField.getText().toLowerCase();
+        String searchText = searchField.getText().trim().toLowerCase();
         panelAffaires.removeAll();
 
-        if (query.isEmpty()) {
-            refreshDisplay();
+        if (searchText.isEmpty()) {
+            refreshDisplay(); // Affichage normal
             return;
         }
 
         if (showAffaires) {
-            controller.getAffaires().stream()
-                    .filter(a -> a.getNomAffaire().toLowerCase().contains(query) ||
-                            a.getCrime().toLowerCase().contains(query) ||
-                            a.getLieu().toLowerCase().contains(query))
-                    .forEach(a -> {
-                        String details = String.format(
-                                "<html><b>Crime:</b> %s<br><b>Lieu:</b> %s<br><b>État:</b> %s</html>",
-                                a.getCrime(), a.getLieu(), a.getEtat());
-                        JPanel card = createCard(a.getNomAffaire(), details, Color.LIGHT_GRAY);
-                        card.setAlignmentX(Component.LEFT_ALIGNMENT);
-                        panelAffaires.add(card);
-                        panelAffaires.add(Box.createRigidArea(new Dimension(0, 10)));
-                    });
+            for (Affaire affaire : controller.getAffaires()) {
+                if (affaire.getNomAffaire().toLowerCase().contains(searchText) ||
+                        affaire.getCrime().toLowerCase().contains(searchText) ||
+                        affaire.getLieu().toLowerCase().contains(searchText)) {
+
+                    String details = String.format(
+                            "<html><b>Crime:</b> %s<br><b>Lieu:</b> %s<br><b>État:</b> %s<br><b>Date:</b> %s</html>",
+                            affaire.getCrime(), affaire.getLieu(), affaire.getEtat(), affaire.getDate());
+
+                    JPanel card = createCard(affaire.getNomAffaire(), details, Color.LIGHT_GRAY);
+                    card.setAlignmentX(Component.LEFT_ALIGNMENT);
+                    panelAffaires.add(card);
+                    panelAffaires.add(Box.createRigidArea(new Dimension(0, 10)));
+                }
+            }
         }
 
         if (showPersonnes) {
-            controller.getPersonnes().stream()
-                    .filter(p -> p.getNomComplet().toLowerCase().contains(query) ||
-                            p.getProfession().toLowerCase().contains(query) ||
-                            p.getQuartier().toLowerCase().contains(query))
-                    .forEach(p -> {
-                        String details = String.format(
-                                "<html><b>Profession:</b> %s<br><b>Quartier:</b> %s<br><b>Âge:</b> %s</html>",
-                                p.getProfession(), p.getQuartier());
-                        JPanel card = createCard(p.getNomComplet(), details, new Color(220, 240, 255));
-                        card.setAlignmentX(Component.LEFT_ALIGNMENT);
-                        panelAffaires.add(card);
-                        panelAffaires.add(Box.createRigidArea(new Dimension(0, 10)));
-                    });
-        }
+            for (Personne personne : controller.getPersonnes()) {
+                if (personne.getNomComplet().toLowerCase().contains(searchText) ||
+                        personne.getProfession().toLowerCase().contains(searchText) ||
+                        personne.getQuartier().toLowerCase().contains(searchText)) {
 
-        if (panelAffaires.getComponentCount() == 0) {
-            JLabel noResult = new JLabel("Aucun résultat trouvé", SwingConstants.CENTER);
-            noResult.setAlignmentX(Component.CENTER_ALIGNMENT);
-            panelAffaires.add(noResult);
+                    String details = String.format(
+                            "<html><b>Profession:</b> %s<br><b>Quartier:</b> %s<br><b>Antécédents:</b> %s</html>",
+                            personne.getProfession(), personne.getQuartier(), personne.getAntecedents());
+
+                    JPanel card = createCard(personne.getNomComplet(), details, new Color(255, 255, 204));
+                    card.setAlignmentX(Component.LEFT_ALIGNMENT);
+                    panelAffaires.add(card);
+                    panelAffaires.add(Box.createRigidArea(new Dimension(0, 10)));
+                }
+            }
         }
 
         panelAffaires.revalidate();
         panelAffaires.repaint();
     }
+
 
     private JButton createIconButton(String text, Color color) {
         JButton btn = new JButton(text);
