@@ -20,6 +20,10 @@ public class AffaireController {
         chargerDonneesInitiales();
     }
 
+    public Personne trouverPersonneParNom(String nomComplet) {
+        return trouverPersonneParNom(this.personnes, nomComplet);
+    }
+
     private void chargerDonneesInitiales() {
         // Chargement depuis CSV
         try {
