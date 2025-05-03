@@ -272,175 +272,18 @@ public class AffaireView extends JFrame {
         return panel;
     }
 
-    private void showAddSelectionDialog() {
-        JDialog selectionDialog = new JDialog(this, "Ajouter un élément", true);
-        selectionDialog.setLayout(new BorderLayout());
-        selectionDialog.setSize(300, 150);
-        selectionDialog.setLocationRelativeTo(this);
-
-        JPanel panel = new JPanel(new GridLayout(2, 1, 10, 10));
-        panel.setBorder(new EmptyBorder(20, 20, 20, 20));
-
-        JButton btnAddAffaire = new JButton("Ajouter une affaire");
-        btnAddAffaire.addActionListener(e -> {
-            selectionDialog.dispose();
-            showAddAffaireDialog();
-        });
-
-        JButton btnAddPersonne = new JButton("Ajouter une personne");
-        btnAddPersonne.addActionListener(e -> {
-            selectionDialog.dispose();
-            showAddPersonneDialog();
-        });
-
-        panel.add(btnAddAffaire);
-        panel.add(btnAddPersonne);
-
-        selectionDialog.add(panel, BorderLayout.CENTER);
-        selectionDialog.setVisible(true);
-    }
-
-    private void showAddAffaireDialog() {
-        JDialog addDialog = new JDialog(this, "Ajouter une affaire", true);
-        addDialog.setLayout(new BorderLayout());
-        addDialog.setSize(500, 500);
-        addDialog.setLocationRelativeTo(this);
-
-        JPanel formPanel = new JPanel(new GridLayout(8, 2, 10, 10));
-        formPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
-
-        // Champs pour une affaire
-        JTextField nomAffaireField = new JTextField();
-        JTextField crimeField = new JTextField();
-        JTextField suspectField = new JTextField();
-        JTextField coupableField = new JTextField();
-        JTextField lieuField = new JTextField();
-        JTextField etatField = new JTextField();
-        JTextField dateField = new JTextField();
-        JTextField descriptionField = new JTextField();
-
-        formPanel.add(new JLabel("Nom de l'affaire:"));
-        formPanel.add(nomAffaireField);
-        formPanel.add(new JLabel("Crime:"));
-        formPanel.add(crimeField);
-        formPanel.add(new JLabel("Suspect:"));
-        formPanel.add(suspectField);
-        formPanel.add(new JLabel("Coupable:"));
-        formPanel.add(coupableField);
-        formPanel.add(new JLabel("Lieu:"));
-        formPanel.add(lieuField);
-        formPanel.add(new JLabel("État:"));
-        formPanel.add(etatField);
-        formPanel.add(new JLabel("Date (AAAA-MM-JJ):"));
-        formPanel.add(dateField);
-        formPanel.add(new JLabel("Description:"));
-        formPanel.add(descriptionField);
-
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        JButton cancelButton = new JButton("Annuler");
-        JButton saveButton = new JButton("Enregistrer");
-
-        cancelButton.addActionListener(e -> addDialog.dispose());
-        saveButton.addActionListener(e -> {
-            // Créer et ajouter la nouvelle affaire
-            Personne suspect = controller.trouverPersonneParNom(controller.getPersonnes(), suspectField.getText());
-            Personne coupable = controller.trouverPersonneParNom(controller.getPersonnes(), coupableField.getText());
-
-            Affaire nouvelleAffaire = new Affaire(
-                    nomAffaireField.getText(),
-                    crimeField.getText(),
-                    suspect,
-                    coupable,
-                    lieuField.getText(),
-                    etatField.getText(),
-                    dateField.getText(),
-                    descriptionField.getText()
-            );
-
-            controller.ajouterAffaire(nouvelleAffaire);
-            addDialog.dispose();
-            refreshDisplay();
-            JOptionPane.showMessageDialog(this, "Affaire ajoutée avec succès!", "Succès", JOptionPane.INFORMATION_MESSAGE);
-        });
-
-        buttonPanel.add(cancelButton);
-        buttonPanel.add(saveButton);
-
-        addDialog.add(formPanel, BorderLayout.CENTER);
-        addDialog.add(buttonPanel, BorderLayout.SOUTH);
-        addDialog.setVisible(true);
-    }
-
-    private void showAddPersonneDialog() {
-        JDialog addDialog = new JDialog(this, "Ajouter une personne", true);
-        addDialog.setLayout(new BorderLayout());
-        addDialog.setSize(500, 500);
-        addDialog.setLocationRelativeTo(this);
-
-        JPanel formPanel = new JPanel(new GridLayout(8, 2, 10, 10));
-        formPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
-
-        // Champs pour une personne
-        JTextField nomField = new JTextField();
-        JTextField prenomField = new JTextField();
-        JTextField ageField = new JTextField();
-        JTextField quartierField = new JTextField();
-        JTextField professionField = new JTextField();
-        JTextField genreField = new JTextField();
-        JTextField antecedentsField = new JTextField();
-        JTextField descriptionField = new JTextField();
-
-        formPanel.add(new JLabel("Nom:"));
-        formPanel.add(nomField);
-        formPanel.add(new JLabel("Prénom:"));
-        formPanel.add(prenomField);
-        formPanel.add(new JLabel("Âge:"));
-        formPanel.add(ageField);
-        formPanel.add(new JLabel("Quartier:"));
-        formPanel.add(quartierField);
-        formPanel.add(new JLabel("Profession:"));
-        formPanel.add(professionField);
-        formPanel.add(new JLabel("Genre:"));
-        formPanel.add(genreField);
-        formPanel.add(new JLabel("Antécédents:"));
-        formPanel.add(antecedentsField);
-        formPanel.add(new JLabel("Description:"));
-        formPanel.add(descriptionField);
-
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        JButton cancelButton = new JButton("Annuler");
-        JButton saveButton = new JButton("Enregistrer");
-
-        cancelButton.addActionListener(e -> addDialog.dispose());
-        saveButton.addActionListener(e -> {
-            // Créer et ajouter la nouvelle personne
-            Personne nouvellePersonne = new Personne(
-                    nomField.getText(),
-                    prenomField.getText(),
-                    ageField.getText(),
-                    quartierField.getText(),
-                    professionField.getText(),
-                    genreField.getText(),
-                    antecedentsField.getText(),
-                    descriptionField.getText()
-            );
-
-            controller.getPersonnes().add(nouvellePersonne);
-            addDialog.dispose();
-            refreshDisplay();
-            JOptionPane.showMessageDialog(this, "Personne ajoutée avec succès!", "Succès", JOptionPane.INFORMATION_MESSAGE);
-        });
-
-        buttonPanel.add(cancelButton);
-        buttonPanel.add(saveButton);
-
-        addDialog.add(formPanel, BorderLayout.CENTER);
-        addDialog.add(buttonPanel, BorderLayout.SOUTH);
-        addDialog.setVisible(true);
-    }
-
     private void ajouterElement() {
-        showAddSelectionDialog();
+        if (showAffaires) {
+            // Logique pour ajouter une nouvelle affaire
+            JOptionPane.showMessageDialog(this,
+                    "Fonctionnalité d'ajout d'affaire à implémenter",
+                    "Ajouter", JOptionPane.INFORMATION_MESSAGE);
+        } else if (showPersonnes) {
+            // Logique pour ajouter une nouvelle personne
+            JOptionPane.showMessageDialog(this,
+                    "Fonctionnalité d'ajout de personne à implémenter",
+                    "Ajouter", JOptionPane.INFORMATION_MESSAGE);
+        }
     }
 
     private void modifierElement() {
