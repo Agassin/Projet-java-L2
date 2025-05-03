@@ -51,7 +51,7 @@ public class Affaire {
         return this.crime;
     }
 
-    public Object getDate() {
+    public String getDate() {
         return this.date;
     }
     public String getDescription() {

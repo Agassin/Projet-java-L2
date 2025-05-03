@@ -9,8 +9,18 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.util.Objects;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
 
 public class AffaireView extends JFrame {
+    // Couleurs modernes
+    private static final Color BACKGROUND_COLOR = new Color(245, 247, 250);
+    private static final Color CARD_COLOR = Color.WHITE;
+    private static final Color PRIMARY_COLOR = new Color(41, 128, 185);
+    private static final Color SECONDARY_COLOR = new Color(52, 152, 219);
+    private static final Color TEXT_COLOR = new Color(51, 51, 51);
+    private static final Color LIGHT_SHADOW = new Color(0, 0, 0, 20);
     private final AffaireController controller;
     private final String username;
     private JPanel mainPanel;
@@ -30,6 +40,7 @@ public class AffaireView extends JFrame {
         this.username = username;
         initUI();
         showDashboard();
+        refreshDisplay(); // Ajoutez cette ligne pour afficher les cartes dès le départ
     }
 
     private void initUI() {
@@ -40,6 +51,7 @@ public class AffaireView extends JFrame {
         mainPanel = new JPanel(new BorderLayout());
         mainPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
         add(mainPanel);
+
 
         createHeader();
 
@@ -587,16 +599,266 @@ public class AffaireView extends JFrame {
 
     private void refreshDisplay() {
         panelAffaires.removeAll();
+        panelAffaires.setLayout(new BoxLayout(panelAffaires, BoxLayout.Y_AXIS)); // Réinitialise le layout
+        panelAffaires.setBackground(Color.WHITE); // Réinitialise la couleur
 
         if (showAffaires) displayAffaires();
         if (showPersonnes) displayPersonnes();
 
-        panelAffaires.add(Box.createVerticalGlue());
         panelAffaires.revalidate();
         panelAffaires.repaint();
     }
 
+
+    private void showDetailsPanel(Affaire affaire) {
+        panelAffaires.removeAll();
+        panelAffaires.setLayout(new BorderLayout());
+        panelAffaires.setBackground(new Color(248, 249, 250));
+
+        // Panel principal
+        JPanel cardPanel = new JPanel();
+        cardPanel.setLayout(new BoxLayout(cardPanel, BoxLayout.Y_AXIS));
+        cardPanel.setBackground(Color.WHITE);
+        cardPanel.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(230, 230, 230)),
+                BorderFactory.createEmptyBorder(25, 25, 25, 25)
+        ));
+
+        // Header avec bouton à droite
+        JPanel headerPanel = new JPanel(new BorderLayout());
+
+        JLabel titleLabel = new JLabel(affaire.getNomAffaire());
+        titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 20));
+        titleLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 15, 0));
+
+        JButton backButton = new JButton("Retour à la liste");
+        styleBackButton(backButton);
+        backButton.addActionListener(e -> refreshDisplay());
+
+        // Ajout des composants avec le bouton à droite
+        headerPanel.add(titleLabel, BorderLayout.CENTER);
+        headerPanel.add(backButton, BorderLayout.EAST);
+
+        // Grid des informations
+        JPanel infoGrid = new JPanel(new GridLayout(0, 2, 15, 10));
+        infoGrid.setBorder(BorderFactory.createEmptyBorder(15, 10, 20, 10));
+
+        addDetailRow(infoGrid, "📌 Crime", affaire.getCrime());
+        addDetailRow(infoGrid, "📍 Lieu", affaire.getLieu());
+        addDetailRow(infoGrid, "🔎 État", affaire.getEtat());
+        addDetailRow(infoGrid, "📅 Date", affaire.getDate());
+
+        if (affaire.getSuspect() != null) {
+            addDetailRow(infoGrid, "👤 Suspect", affaire.getSuspect().getNomComplet());
+        }
+
+        if (affaire.getCoupable() != null) {
+            addDetailRow(infoGrid, "🔒 Coupable", affaire.getCoupable().getNomComplet());
+        }
+
+        // Description dans un panel séparé
+        JTextArea descriptionArea = new JTextArea(affaire.getDescription());
+        descriptionArea.setLineWrap(true);
+        descriptionArea.setWrapStyleWord(true);
+        descriptionArea.setEditable(false);
+        descriptionArea.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        descriptionArea.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createTitledBorder("📋 Description"),
+                BorderFactory.createEmptyBorder(10, 10, 10, 10)
+        ));
+
+        // Assemblage
+        cardPanel.add(headerPanel);
+        cardPanel.add(infoGrid);
+        cardPanel.add(Box.createRigidArea(new Dimension(0, 15)));
+        cardPanel.add(descriptionArea);
+
+        panelAffaires.add(cardPanel, BorderLayout.CENTER);
+        panelAffaires.revalidate();
+        panelAffaires.repaint();
+    }
+
+    private void styleBackButton(JButton button) {
+        button.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        button.setForeground(new Color(41, 128, 185));
+        button.setBackground(new Color(240, 240, 240)); // Fond gris clair
+        button.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(200, 200, 200)),
+                BorderFactory.createEmptyBorder(5, 15, 5, 15)
+        ));
+        button.setFocusPainted(false);
+        button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+        button.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent e) {
+                button.setBackground(new Color(230, 230, 230));
+            }
+            public void mouseExited(MouseEvent e) {
+                button.setBackground(new Color(240, 240, 240));
+            }
+        });
+    }
+
+    private void addDetailRow(JPanel panel, String label, String value) {
+        JPanel rowPanel = new JPanel(new BorderLayout(10, 0));
+
+        JLabel labelLabel = new JLabel(label);
+        labelLabel.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        labelLabel.setForeground(new Color(100, 100, 100));
+
+        JLabel valueLabel = new JLabel(value);
+        valueLabel.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+
+        rowPanel.add(labelLabel, BorderLayout.WEST);
+        rowPanel.add(valueLabel, BorderLayout.CENTER);
+        panel.add(rowPanel);
+    }
+    private void showDetailsPanel2(Personne personne) {
+        panelAffaires.removeAll();
+        panelAffaires.setLayout(new BorderLayout());
+        panelAffaires.setBackground(new Color(248, 249, 250));
+
+        // Panel principal
+        JPanel cardPanel = new JPanel();
+        cardPanel.setLayout(new BoxLayout(cardPanel, BoxLayout.Y_AXIS));
+        cardPanel.setBackground(Color.WHITE);
+        cardPanel.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(230, 230, 230)),
+                BorderFactory.createEmptyBorder(25, 25, 25, 25)
+        ));
+
+        // Header avec bouton à droite
+        JPanel headerPanel = new JPanel(new BorderLayout());
+
+        JLabel titleLabel = new JLabel(personne.getNomComplet());
+        titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 20));
+        titleLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 15, 0));
+
+        JButton backButton = new JButton("Retour à la liste");
+        styleBackButton(backButton);
+        backButton.addActionListener(e -> refreshDisplay());
+
+        // Ajout des composants avec le bouton à droite
+        headerPanel.add(titleLabel, BorderLayout.CENTER);
+        headerPanel.add(backButton, BorderLayout.EAST);
+
+        // Grid d'informations
+        JPanel infoGrid = new JPanel(new GridLayout(0, 2, 15, 10));
+        infoGrid.setBorder(BorderFactory.createEmptyBorder(15, 10, 20, 10));
+
+        addDetailRow(infoGrid, "👤 Âge", personne.getAge());
+        addDetailRow(infoGrid, "💼 Profession", personne.getProfession());
+        addDetailRow(infoGrid, "🏘️ Quartier", personne.getQuartier());
+        addDetailRow(infoGrid, "👫 Genre", personne.getGenre());
+        addDetailRow(infoGrid, "📜 Antécédents", personne.getAntecedents());
+
+
+
+        // Assemblage
+        cardPanel.add(headerPanel);
+        cardPanel.add(infoGrid);
+        cardPanel.add(Box.createRigidArea(new Dimension(0, 15)));
+
+
+        panelAffaires.add(cardPanel, BorderLayout.CENTER);
+        panelAffaires.revalidate();
+        panelAffaires.repaint();
+    }
+
+    private void addDetailField(JPanel panel, String label, String value) {
+        JPanel fieldPanel = new JPanel(new BorderLayout());
+        fieldPanel.setBackground(CARD_COLOR);
+
+        JLabel labelComp = new JLabel(label);
+        labelComp.setFont(new Font("Segoe UI", Font.BOLD, 13));
+        labelComp.setForeground(new Color(100, 100, 100));
+
+        JLabel valueComp = new JLabel(value);
+        valueComp.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        valueComp.setBorder(BorderFactory.createEmptyBorder(3, 10, 3, 0));
+
+        fieldPanel.add(labelComp, BorderLayout.NORTH);
+        fieldPanel.add(valueComp, BorderLayout.CENTER);
+
+        panel.add(fieldPanel);
+    }
+
+    private void styleButton(JButton button, Color bgColor) {
+        button.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        button.setBackground(bgColor);
+        button.setForeground(Color.WHITE);
+        button.setFocusPainted(false);
+        button.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(bgColor.darker(), 1),
+                BorderFactory.createEmptyBorder(5, 12, 5, 12)
+        ));
+        button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+    }
+
+    private void showDetailsPanel(Personne personne) {
+        panelAffaires.removeAll();
+
+        JPanel detailsPanel = new JPanel();
+        detailsPanel.setLayout(new BoxLayout(detailsPanel, BoxLayout.Y_AXIS));
+        detailsPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
+
+        // Titre et bouton retour
+        JPanel headerPanel = new JPanel(new BorderLayout());
+        JButton backButton = new JButton("Retour à la liste");
+        backButton.addActionListener(e -> refreshDisplay());
+        headerPanel.add(backButton, BorderLayout.WEST);
+
+        JLabel titleLabel = new JLabel(personne.getNomComplet(), SwingConstants.CENTER);
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        headerPanel.add(titleLabel, BorderLayout.CENTER);
+
+        detailsPanel.add(headerPanel);
+        detailsPanel.add(Box.createRigidArea(new Dimension(0, 20)));
+
+        // Détails de la personne
+        JPanel contentPanel = new JPanel();
+        contentPanel.setLayout(new GridLayout(0, 1, 5, 5));
+        contentPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        contentPanel.add(createDetailComponent("Âge", personne.getAge()));
+        contentPanel.add(createDetailComponent("Profession", personne.getProfession()));
+        contentPanel.add(createDetailComponent("Quartier", personne.getQuartier()));
+        contentPanel.add(createDetailComponent("Genre", personne.getGenre()));
+        contentPanel.add(createDetailComponent("Antécédents", personne.getAntecedents()));
+
+        // Description
+        JTextArea descriptionArea = new JTextArea(personne.getDescription());
+        descriptionArea.setLineWrap(true);
+        descriptionArea.setWrapStyleWord(true);
+        descriptionArea.setEditable(false);
+        descriptionArea.setBorder(BorderFactory.createTitledBorder("Description"));
+
+        detailsPanel.add(contentPanel);
+        detailsPanel.add(Box.createRigidArea(new Dimension(0, 20)));
+        detailsPanel.add(new JScrollPane(descriptionArea));
+
+        panelAffaires.add(detailsPanel);
+        panelAffaires.revalidate();
+        panelAffaires.repaint();
+    }
+
+    private JPanel createDetailComponent(String label, String value) {
+        JPanel panel = new JPanel(new BorderLayout());
+        JLabel labelComponent = new JLabel(label + ": ");
+        labelComponent.setFont(new Font("Arial", Font.BOLD, 14));
+
+        JLabel valueComponent = new JLabel(value);
+        valueComponent.setFont(new Font("Arial", Font.PLAIN, 14));
+
+        panel.add(labelComponent, BorderLayout.WEST);
+        panel.add(valueComponent, BorderLayout.CENTER);
+        panel.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+
+        return panel;
+    }
     private void displayAffaires() {
+        panelAffaires.removeAll();
+
         controller.getAffaires().forEach(affaire -> {
             String details = String.format(
                     "<html><b>Crime:</b> %s<br><b>Lieu:</b> %s<br><b>État:</b> %s<br><b>Date:</b> %s</html>",
@@ -604,12 +866,134 @@ public class AffaireView extends JFrame {
 
             JPanel card = createCard(affaire.getNomAffaire(), details, Color.LIGHT_GRAY);
             card.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+            card.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    showDetailsPanel(affaire);
+                }
+            });
+
             panelAffaires.add(card);
             panelAffaires.add(Box.createRigidArea(new Dimension(0, 10)));
         });
+
+        panelAffaires.revalidate();
+        panelAffaires.repaint();
+    }
+
+    private void showAffaireDetails(Affaire affaire) {
+        JDialog detailsDialog = new JDialog(this, "Détails de l'affaire", true);
+        detailsDialog.setLayout(new BorderLayout());
+        detailsDialog.setSize(500, 400);
+        detailsDialog.setLocationRelativeTo(this);
+
+        JPanel contentPanel = new JPanel();
+        contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
+        contentPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
+
+        // Titre
+        JLabel titleLabel = new JLabel(affaire.getNomAffaire(), SwingConstants.CENTER);
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        contentPanel.add(titleLabel);
+        contentPanel.add(Box.createRigidArea(new Dimension(0, 20)));
+
+        // Détails
+        JPanel detailsPanel = new JPanel(new GridLayout(0, 1, 5, 5));
+        detailsPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        detailsPanel.add(createDetailLabel("Crime: " + affaire.getCrime()));
+        detailsPanel.add(createDetailLabel("Lieu: " + affaire.getLieu()));
+        detailsPanel.add(createDetailLabel("État: " + affaire.getEtat()));
+        detailsPanel.add(createDetailLabel("Date: " + affaire.getDate()));
+
+        if (affaire.getSuspect() != null) {
+            detailsPanel.add(createDetailLabel("Suspect: " + affaire.getSuspect().getNomComplet()));
+        }
+
+        if (affaire.getCoupable() != null) {
+            detailsPanel.add(createDetailLabel("Coupable: " + affaire.getCoupable().getNomComplet()));
+        }
+
+        detailsPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+
+        JTextArea descriptionArea = new JTextArea(affaire.getDescription());
+        descriptionArea.setLineWrap(true);
+        descriptionArea.setWrapStyleWord(true);
+        descriptionArea.setEditable(false);
+        descriptionArea.setBorder(BorderFactory.createTitledBorder("Description"));
+        detailsPanel.add(new JScrollPane(descriptionArea));
+
+        contentPanel.add(detailsPanel);
+
+        // Bouton Fermer
+        JButton closeButton = new JButton("Fermer");
+        closeButton.addActionListener(e -> detailsDialog.dispose());
+        closeButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        contentPanel.add(Box.createRigidArea(new Dimension(0, 20)));
+        contentPanel.add(closeButton);
+
+        detailsDialog.add(contentPanel, BorderLayout.CENTER);
+        detailsDialog.setVisible(true);
+    }
+
+    private void showPersonneDetails(Personne personne) {
+        JDialog detailsDialog = new JDialog(this, "Détails de la personne", true);
+        detailsDialog.setLayout(new BorderLayout());
+        detailsDialog.setSize(500, 400);
+        detailsDialog.setLocationRelativeTo(this);
+
+        JPanel contentPanel = new JPanel();
+        contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
+        contentPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
+
+        // Titre
+        JLabel titleLabel = new JLabel(personne.getNomComplet(), SwingConstants.CENTER);
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        contentPanel.add(titleLabel);
+        contentPanel.add(Box.createRigidArea(new Dimension(0, 20)));
+
+        // Détails
+        JPanel detailsPanel = new JPanel(new GridLayout(0, 1, 5, 5));
+        detailsPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        detailsPanel.add(createDetailLabel("Âge: " + personne.getAge()));
+        detailsPanel.add(createDetailLabel("Profession: " + personne.getProfession()));
+        detailsPanel.add(createDetailLabel("Quartier: " + personne.getQuartier()));
+        detailsPanel.add(createDetailLabel("Genre: " + personne.getGenre()));
+        detailsPanel.add(createDetailLabel("Antécédents: " + personne.getAntecedents()));
+
+        detailsPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+
+        JTextArea descriptionArea = new JTextArea(personne.getDescription());
+        descriptionArea.setLineWrap(true);
+        descriptionArea.setWrapStyleWord(true);
+        descriptionArea.setEditable(false);
+        descriptionArea.setBorder(BorderFactory.createTitledBorder("Description"));
+        detailsPanel.add(new JScrollPane(descriptionArea));
+
+        contentPanel.add(detailsPanel);
+
+        // Bouton Fermer
+        JButton closeButton = new JButton("Fermer");
+        closeButton.addActionListener(e -> detailsDialog.dispose());
+        closeButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        contentPanel.add(Box.createRigidArea(new Dimension(0, 20)));
+        contentPanel.add(closeButton);
+
+        detailsDialog.add(contentPanel, BorderLayout.CENTER);
+        detailsDialog.setVisible(true);
+    }
+
+    private JLabel createDetailLabel(String text) {
+        JLabel label = new JLabel(text);
+        label.setFont(new Font("Arial", Font.PLAIN, 14));
+        return label;
     }
 
     private void displayPersonnes() {
+        panelAffaires.removeAll();
+
         controller.getPersonnes().forEach(personne -> {
             String details = String.format(
                     "<html><b>Profession:</b> %s<br><b>Quartier:</b> %s<br><b>Antécédents:</b> %s</html>",
@@ -617,10 +1001,24 @@ public class AffaireView extends JFrame {
 
             JPanel card = createCard(personne.getNomComplet(), details, new Color(220, 240, 255));
             card.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+            card.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    showDetailsPanel2(personne);
+                }
+            });
+
             panelAffaires.add(card);
             panelAffaires.add(Box.createRigidArea(new Dimension(0, 10)));
         });
+
+        panelAffaires.revalidate();
+        panelAffaires.repaint();
     }
+
+
+
 
     private void search() {
         String searchText = searchField.getText().trim().toLowerCase();
@@ -747,27 +1145,37 @@ public class AffaireView extends JFrame {
 
     private JPanel createCard(String title, String details, Color bgColor) {
         JPanel card = new JPanel(new BorderLayout());
-        card.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(Color.GRAY),
-                BorderFactory.createEmptyBorder(10, 10, 10, 10)
-        ));
         card.setBackground(bgColor);
-        card.setPreferredSize(new Dimension(250, 150));
+        card.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createMatteBorder(1, 1, 1, 1, LIGHT_SHADOW),
+                BorderFactory.createEmptyBorder(15, 15, 15, 15)
+        ));
+        card.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
-        JLabel titleLabel = new JLabel(title, SwingConstants.CENTER);
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 14));
+        // Effet d'ombre portée
+        JPanel shadowWrapper = new JPanel(new BorderLayout());
+        shadowWrapper.setBorder(BorderFactory.createEmptyBorder(3, 3, 6, 6));
+        shadowWrapper.setBackground(BACKGROUND_COLOR);
+        shadowWrapper.add(card);
+
+        // Titre stylisé
+        JLabel titleLabel = new JLabel(title);
+        titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 16));
+        titleLabel.setForeground(PRIMARY_COLOR);
         titleLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
 
-        JEditorPane detailsPane = new JEditorPane();
+        // Détails avec HTML pour un rendu propre
+        JTextPane detailsPane = new JTextPane();
         detailsPane.setContentType("text/html");
-        detailsPane.setText(details);
+        detailsPane.setText("<html><body style='font-family: Segoe UI; font-size: 13px; color: #333;'>" + details + "</body></html>");
         detailsPane.setEditable(false);
         detailsPane.setBackground(bgColor);
         detailsPane.setBorder(null);
 
         card.add(titleLabel, BorderLayout.NORTH);
-        card.add(new JScrollPane(detailsPane), BorderLayout.CENTER);
-        return card;
+        card.add(detailsPane, BorderLayout.CENTER);
+
+        return shadowWrapper;
     }
 
 }
