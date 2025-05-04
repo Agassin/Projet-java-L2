@@ -323,13 +323,13 @@ public class AffaireView extends JFrame {
         formPanel.add(nomAffaireField);
         formPanel.add(new JLabel("Crime:"));
         formPanel.add(crimeField);
-        formPanel.add(new JLabel("Suspect:"));
+        formPanel.add(new JLabel("Suspect (Prénom Nom):"));
         formPanel.add(suspectField);
-        formPanel.add(new JLabel("Coupable:"));
+        formPanel.add(new JLabel("Coupable (Prénom Nom):"));
         formPanel.add(coupableField);
         formPanel.add(new JLabel("Lieu:"));
         formPanel.add(lieuField);
-        formPanel.add(new JLabel("État:"));
+        formPanel.add(new JLabel("État (En cours/Fermée):"));
         formPanel.add(etatField);
         formPanel.add(new JLabel("Date (AAAA-MM-JJ):"));
         formPanel.add(dateField);
@@ -342,10 +342,11 @@ public class AffaireView extends JFrame {
 
         cancelButton.addActionListener(e -> addDialog.dispose());
         saveButton.addActionListener(e -> {
-            // Créer et ajouter la nouvelle affaire
+            // Trouver le suspect et le coupable dans la liste des personnes
             Personne suspect = controller.trouverPersonneParNom(controller.getPersonnes(), suspectField.getText());
             Personne coupable = controller.trouverPersonneParNom(controller.getPersonnes(), coupableField.getText());
 
+            // Créer la nouvelle affaire
             Affaire nouvelleAffaire = new Affaire(
                     nomAffaireField.getText(),
                     crimeField.getText(),
@@ -357,7 +358,9 @@ public class AffaireView extends JFrame {
                     descriptionField.getText()
             );
 
+            // Ajouter l'affaire via le contrôleur
             controller.ajouterAffaire(nouvelleAffaire);
+
             addDialog.dispose();
             refreshDisplay();
             JOptionPane.showMessageDialog(this, "Affaire ajoutée avec succès!", "Succès", JOptionPane.INFORMATION_MESSAGE);

@@ -39,7 +39,7 @@ public class AffaireController {
         if (affaire == null) {
             throw new IllegalArgumentException("L'affaire ne peut pas être null");
         }
-        affaires.add(affaire);
+        this.affaires.add(affaire);
     }
 
     public void ajouterPersonne(Personne personne) {
