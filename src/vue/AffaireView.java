@@ -413,7 +413,7 @@ public class AffaireView extends JFrame {
 
         cancelButton.addActionListener(e -> addDialog.dispose());
         saveButton.addActionListener(e -> {
-            // Créer et ajouter la nouvelle personne
+            // Créer et ajouter la nouvelle personne via le contrôleur
             Personne nouvellePersonne = new Personne(
                     nomField.getText(),
                     prenomField.getText(),
@@ -425,7 +425,12 @@ public class AffaireView extends JFrame {
                     descriptionField.getText()
             );
 
-            controller.getPersonnes().add(nouvellePersonne);
+            // Ajouter la méthode suivante dans AffaireController:
+            // public void ajouterPersonne(Personne personne) {
+            //     this.personnes.add(personne);
+            // }
+            controller.ajouterPersonne(nouvellePersonne);
+
             addDialog.dispose();
             refreshDisplay();
             JOptionPane.showMessageDialog(this, "Personne ajoutée avec succès!", "Succès", JOptionPane.INFORMATION_MESSAGE);

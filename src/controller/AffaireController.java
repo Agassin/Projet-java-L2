@@ -8,6 +8,7 @@ import com.opencsv.exceptions.CsvValidationException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class AffaireController {
@@ -39,6 +40,13 @@ public class AffaireController {
             throw new IllegalArgumentException("L'affaire ne peut pas être null");
         }
         affaires.add(affaire);
+    }
+
+    public void ajouterPersonne(Personne personne) {
+        if (personne == null) {
+            throw new IllegalArgumentException("La personne ne peut pas être null");
+        }
+        this.personnes.add(personne);
     }
 
     public static List<Personne> lirePersonnesCSV(String fichier) throws IOException, CsvValidationException {
@@ -99,11 +107,12 @@ public class AffaireController {
     }
 
     public List<Affaire> getAffaires() {
-        return new ArrayList<>(affaires);
+
+        return Collections.unmodifiableList(affaires);
     }
 
     public List<Personne> getPersonnes() {
-        return new ArrayList<>(personnes);
+        return Collections.unmodifiableList(personnes); // Ou simplement return personnes;
     }
 
     public void afficherCoupableAffaire(String nomAffaire) {
