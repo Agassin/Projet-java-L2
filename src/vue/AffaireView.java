@@ -3,6 +3,7 @@ package src.vue;
 import src.controller.AffaireController;
 import src.model.Affaire;
 import src.model.Personne;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
@@ -31,6 +32,7 @@ public class AffaireView extends JFrame {
     private JPanel settingsPanel;
     private JTextField searchField;
     private JPanel panelAffaires;
+    private JPanel statsPanel = new JPanel(new GridLayout(1, 4, 15, 15));
     private JButton btnAffaires, btnPersonnes;
     private boolean showAffaires = true;
     private boolean showPersonnes = true;
@@ -112,11 +114,11 @@ public class AffaireView extends JFrame {
         JPanel dashboard = new JPanel(new BorderLayout());
         dashboard.setBorder(new EmptyBorder(10, 20, 20, 20));
 
-        JPanel statsPanel = new JPanel(new GridLayout(1, 4, 15, 15));
+
         statsPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
-        statsPanel.add(createStatCard("Affaires en cours", "5 000", "62%", new Color(33, 150, 243)));
-        statsPanel.add(createStatCard("Affaires classées", "2 500", "25%", new Color(76, 175, 80)));
-        statsPanel.add(createStatCard("Affaires urgentes", "150", "12%", new Color(244, 67, 54)));
+        statsPanel.add(createStatCard("Affaires en cours", String.valueOf(controller.getNbAffairesParStatut("En cours")), controller.getPourcentageAffaire("En cours") + "%" , new Color(33, 150, 243)));
+        statsPanel.add(createStatCard("Affaires classées", String.valueOf(controller.getNbAffairesParStatut("Fermée")), controller.getPourcentageAffaire("Fermée") + "%" , new Color(76, 175, 80)));
+        statsPanel.add(createStatCard("Affaires urgentes", String.valueOf(controller.getNbAffairesParStatut("Urgente")), controller.getPourcentageAffaire("Urgente") + "%" , new Color(244, 67, 54)));
         statsPanel.add(createStatCard("Amendes à verser", "15 000", "€", new Color(255, 193, 7)));
         dashboard.add(statsPanel, BorderLayout.NORTH);
 
@@ -343,8 +345,8 @@ public class AffaireView extends JFrame {
         cancelButton.addActionListener(e -> addDialog.dispose());
         saveButton.addActionListener(e -> {
             // Trouver le suspect et le coupable dans la liste des personnes
-            Personne suspect = controller.trouverPersonneParNom(controller.getPersonnes(), suspectField.getText());
-            Personne coupable = controller.trouverPersonneParNom(controller.getPersonnes(), coupableField.getText());
+            Personne suspect = AffaireController.trouverPersonneParNom(controller.getPersonnes(), suspectField.getText());
+            Personne coupable = AffaireController.trouverPersonneParNom(controller.getPersonnes(), coupableField.getText());
 
             // Créer la nouvelle affaire
             Affaire nouvelleAffaire = new Affaire(
@@ -360,6 +362,7 @@ public class AffaireView extends JFrame {
 
             // Ajouter l'affaire via le contrôleur
             controller.ajouterAffaire(nouvelleAffaire);
+
 
             addDialog.dispose();
             refreshDisplay();
@@ -529,6 +532,10 @@ public class AffaireView extends JFrame {
         ButtonGroup themeGroup = new ButtonGroup();
         JRadioButton lightTheme = new JRadioButton("Thème clair", true);
         JRadioButton darkTheme = new JRadioButton("Thème sombre");
+
+
+        darkTheme.addActionListener(e-> mettreEnDark());
+        lightTheme.addActionListener(e-> mettreEnLight());
         themeGroup.add(lightTheme);
         themeGroup.add(darkTheme);
 
@@ -606,6 +613,19 @@ public class AffaireView extends JFrame {
     }
 
     private void refreshDisplay() {
+
+        statsPanel.removeAll();
+
+
+        statsPanel.add(createStatCard("Affaires en cours", String.valueOf(controller.getNbAffairesParStatut("En cours")), controller.getPourcentageAffaire("En cours") + "%" , new Color(33, 150, 243)));
+        statsPanel.add(createStatCard("Affaires classées", String.valueOf(controller.getNbAffairesParStatut("Fermée")), controller.getPourcentageAffaire("Fermée") + "%" , new Color(76, 175, 80)));
+        statsPanel.add(createStatCard("Affaires urgentes", String.valueOf(controller.getNbAffairesParStatut("Urgente")), controller.getPourcentageAffaire("Urgente") + "%" , new Color(244, 67, 54)));
+        statsPanel.add(createStatCard("Amendes à verser", "15 000", "€", new Color(255, 193, 7)));
+
+
+        statsPanel.revalidate();
+        statsPanel.repaint();
+
         panelAffaires.removeAll();
         panelAffaires.setLayout(new BoxLayout(panelAffaires, BoxLayout.Y_AXIS)); // Réinitialise le layout
         panelAffaires.setBackground(Color.WHITE); // Réinitialise la couleur
@@ -1185,5 +1205,23 @@ public class AffaireView extends JFrame {
 
         return shadowWrapper;
     }
+
+    private void mettreEnDark(){
+        this.mainPanel.setBackground(Color.BLACK);
+        this.contentPanel.setBackground(Color.BLACK);
+        this.mainPanel.setForeground(Color.WHITE);
+        this.contentPanel.setForeground(Color.WHITE);
+        this.dashboardPanel.setBackground(Color.BLACK);
+        this.dashboardPanel.setForeground(Color.WHITE);
+    }
+    private void mettreEnLight(){
+        this.contentPanel.setBackground(Color.WHITE);
+        this.contentPanel.setForeground(Color.WHITE);
+        this.dashboardPanel.setBackground(Color.WHITE);
+        this.dashboardPanel.setForeground(Color.WHITE);
+
+    }
+
+
 
 }

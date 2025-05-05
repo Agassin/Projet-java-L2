@@ -38,11 +38,11 @@ public class LoginView extends JFrame {
 
         JPanel formPanel = new JPanel(new GridLayout(2, 2, 5, 10));
         formPanel.add(new JLabel("Identifiant:"));
-        usernameField = new JTextField();
+        usernameField = new JTextField("admin");
         formPanel.add(usernameField);
 
         formPanel.add(new JLabel("Mot de passe:"));
-        passwordField = new JPasswordField();
+        passwordField = new JPasswordField("caca");
         formPanel.add(passwordField);
 
         mainPanel.add(formPanel, gbc);

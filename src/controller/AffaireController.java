@@ -130,4 +130,43 @@ public class AffaireController {
                         () -> System.out.println("Affaire non trouvée")
                 );
     }
+
+    public int getNbAffairesParStatut(String etat){
+        int cptOuv = 0;
+        int cptFerm = 0;
+        int cptUrg = 0;
+        int resultat = 0;
+        for(Affaire a : affaires){
+            if(a.getEtat().equals("En cours")){
+                cptOuv++;
+
+            }
+            if(a.getEtat().equals("Fermée")){
+                cptFerm++;
+
+            }
+            if(a.getEtat().equals("Urgente")){
+                cptUrg++;
+
+            }
+
+        }
+
+        if(etat == "En cours"){
+            resultat = cptOuv;
+        }else if(etat == "Fermée"){
+            resultat = cptFerm;
+        }else if(etat == "Urgente") {
+            resultat = cptUrg;
+        }
+
+        return resultat ;
+    }
+
+
+    public int getPourcentageAffaire(String etat){
+        int a = getNbAffairesParStatut(etat);
+        int b  = affaires.size();
+        return (a*100) / b;
+    }
 }
