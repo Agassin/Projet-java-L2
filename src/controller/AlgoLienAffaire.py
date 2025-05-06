@@ -48,8 +48,8 @@ resultats = personnes_filtrees.sort_values(by="Similarite", ascending=False)
 # Affichage
 print(f"\n Résultats pour {affaire_nom} :\n")
 for i, row in resultats.head(3).iterrows():
-    print(f"- {row['Prénom']} {row['Nom']} (Antécédents : {row['antecedents']})")
-    print(f"  --> Similarité : {row['Similarite']:.2f}")
+    print(f"- {row['Prénom']} {row['Nom']} (Antecedents : {row['antecedents']})")
+    print(f"  --> Similarite : {row['Similarite']:.2f}")
     print(f"  --> Description : {row['Description Crime']}\n")
 
 # Export CSV
