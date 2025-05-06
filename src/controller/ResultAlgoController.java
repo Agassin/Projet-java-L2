@@ -15,7 +15,7 @@ public class ResultAlgoController {
 
     public ResultAlgoController() {
         this.crimesSimilaires = new ArrayList<>();
-        chargerCrimesSimilaires("src/BDD/CrimesSimilaires.csv");
+        chargerCrimesSimilaires("src/controller/resultats_affaire.csv");
     }
 
     private void chargerCrimesSimilaires(String cheminCSV) {

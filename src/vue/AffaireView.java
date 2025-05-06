@@ -9,6 +9,9 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.InputStreamReader;
 import java.util.Objects;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -898,6 +901,38 @@ public class AffaireView extends JFrame {
             card.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
+                    try {
+                        // Chemin vers le script Python
+                        String pythonExe = "C:\\Users\\Mat le gros lardon\\Documents\\GitHub\\Projet-java-L2\\.venv\\Scripts\\python.exe";
+
+                        // Dossier contenant AlgoLienAffaire.py
+                        File workingDir = new File("C:\\Users\\Mat le gros lardon\\Documents\\GitHub\\Projet-java-L2\\src\\controller");
+
+                        // Nom du script seulement, car il est dans ce dossier
+                        String scriptPath = "AlgoLienAffaire.py";
+
+                        String affaireNom = affaire.getNomAffaire();
+
+                        // Crée le processus avec l'argument
+                        ProcessBuilder pb = new ProcessBuilder(pythonExe, scriptPath, affaireNom);
+                        pb.directory(workingDir);
+                        pb.redirectErrorStream(true);
+
+                        Process p = pb.start();
+
+                        BufferedReader reader = new BufferedReader(
+                                new InputStreamReader(p.getInputStream()));
+                        String line;
+                        while ((line = reader.readLine()) != null) {
+                            System.out.println(line);
+                        }
+
+                        int exitCode = p.waitFor();
+                        System.out.println("Le script Python s'est terminé avec le code : " + exitCode);
+
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
                     showDetailsPanel(affaire);
                 }
             });
