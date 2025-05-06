@@ -978,7 +978,7 @@ public class AffaireView extends JFrame {
         // Description originale de l'affaire
         JTextPane descriptionAffaire = new JTextPane();
         descriptionAffaire.setContentType("text/html");
-        descriptionAffaire.setText("<html><body style='font-family: Arial; font-size: 14px;'><b>Description originale :</b><br>" +
+        descriptionAffaire.setText("<html><body style='font-family: Arial; font-size: 10px;'><b>Description :</b><br>" +
                 affaire.getDescription() + "</body></html>");
         descriptionAffaire.setEditable(false);
         descriptionAffaire.setBackground(new Color(248, 249, 250));
@@ -988,7 +988,7 @@ public class AffaireView extends JFrame {
         ));
 
         // Résultats similaires de l'algorithme
-        StringBuilder similarResultsText = new StringBuilder("<html><body style='font-family: Arial; font-size: 14px;'>");
+        StringBuilder similarResultsText = new StringBuilder("<html><body style='font-family: Arial; font-size: 10px;'>");
         similarResultsText.append("<b>Résultats similaires :</b><br><br>");
 
         List<ResultatAlgo> resultatsSimilaires = resultAlgoController.getCrimesSimilaires();
