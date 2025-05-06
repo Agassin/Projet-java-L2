@@ -49,6 +49,34 @@ public class AffaireController {
         this.personnes.add(personne);
     }
 
+    public boolean supprimerAffaire(String nomAffaire) {
+        return affaires.removeIf(a -> a.getNomAffaire().equalsIgnoreCase(nomAffaire));
+    }
+
+    public boolean modifierAffaire(String nomAffaire, Affaire nouvelleAffaire) {
+        for (int i = 0; i < affaires.size(); i++) {
+            if (affaires.get(i).getNomAffaire().equalsIgnoreCase(nomAffaire)) {
+                affaires.set(i, nouvelleAffaire);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean supprimerPersonne(String nomComplet) {
+        return personnes.removeIf(p -> p.getNomComplet().equalsIgnoreCase(nomComplet));
+    }
+
+    public boolean modifierPersonne(String nomComplet, Personne nouvellePersonne) {
+        for (int i = 0; i < personnes.size(); i++) {
+            if (personnes.get(i).getNomComplet().equalsIgnoreCase(nomComplet)) {
+                personnes.set(i, nouvellePersonne);
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static List<Personne> lirePersonnesCSV(String fichier) throws IOException, CsvValidationException {
         List<Personne> personnes = new ArrayList<>();
         try (CSVReader reader = new CSVReader(new FileReader(fichier))) {

@@ -15,6 +15,8 @@ import java.io.InputStreamReader;
 import java.util.Objects;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.List;
+
 
 
 public class AffaireView extends JFrame {
@@ -459,30 +461,270 @@ public class AffaireView extends JFrame {
 
     private void modifierElement() {
         if (showAffaires) {
-            // Logique pour modifier une affaire existante
-            JOptionPane.showMessageDialog(this,
-                    "Fonctionnalité de modification d'affaire à implémenter",
-                    "Modifier", JOptionPane.INFORMATION_MESSAGE);
+            // Modification d'une affaire
+            List<Affaire> affaires = controller.getAffaires();
+            if (affaires.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Aucune affaire à modifier", "Information", JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+
+            Affaire affaireSelectionnee = (Affaire) JOptionPane.showInputDialog(
+                    this,
+                    "Sélectionnez l'affaire à modifier:",
+                    "Modifier une affaire",
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    affaires.toArray(),
+                    affaires.get(0));
+
+            if (affaireSelectionnee != null) {
+                showEditAffaireDialog(affaireSelectionnee);
+            }
         } else if (showPersonnes) {
-            // Logique pour modifier une personne existante
-            JOptionPane.showMessageDialog(this,
-                    "Fonctionnalité de modification de personne à implémenter",
-                    "Modifier", JOptionPane.INFORMATION_MESSAGE);
+            // Modification d'une personne
+            List<Personne> personnes = controller.getPersonnes();
+            if (personnes.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Aucune personne à modifier", "Information", JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+
+            Personne personneSelectionnee = (Personne) JOptionPane.showInputDialog(
+                    this,
+                    "Sélectionnez la personne à modifier:",
+                    "Modifier une personne",
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    personnes.toArray(),
+                    personnes.get(0));
+
+            if (personneSelectionnee != null) {
+                showEditPersonneDialog(personneSelectionnee);
+            }
         }
     }
 
     private void supprimerElement() {
         if (showAffaires) {
-            // Logique pour supprimer une affaire
-            JOptionPane.showMessageDialog(this,
-                    "Fonctionnalité de suppression d'affaire à implémenter",
-                    "Supprimer", JOptionPane.INFORMATION_MESSAGE);
+            // Suppression d'une affaire
+            List<Affaire> affaires = controller.getAffaires();
+            if (affaires.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Aucune affaire à supprimer", "Information", JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+
+            Affaire affaireSelectionnee = (Affaire) JOptionPane.showInputDialog(
+                    this,
+                    "Sélectionnez l'affaire à supprimer:",
+                    "Supprimer une affaire",
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    affaires.toArray(),
+                    affaires.get(0));
+
+            if (affaireSelectionnee != null) {
+                int confirm = JOptionPane.showConfirmDialog(
+                        this,
+                        "Êtes-vous sûr de vouloir supprimer l'affaire '" + affaireSelectionnee.getNomAffaire() + "'?",
+                        "Confirmation de suppression",
+                        JOptionPane.YES_NO_OPTION);
+
+                if (confirm == JOptionPane.YES_OPTION) {
+                    boolean success = controller.supprimerAffaire(affaireSelectionnee.getNomAffaire());
+                    if (success) {
+                        JOptionPane.showMessageDialog(this, "Affaire supprimée avec succès", "Succès", JOptionPane.INFORMATION_MESSAGE);
+                        refreshDisplay();
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Erreur lors de la suppression", "Erreur", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            }
         } else if (showPersonnes) {
-            // Logique pour supprimer une personne
-            JOptionPane.showMessageDialog(this,
-                    "Fonctionnalité de suppression de personne à implémenter",
-                    "Supprimer", JOptionPane.INFORMATION_MESSAGE);
+            // Suppression d'une personne
+            List<Personne> personnes = controller.getPersonnes();
+            if (personnes.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Aucune personne à supprimer", "Information", JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+
+            Personne personneSelectionnee = (Personne) JOptionPane.showInputDialog(
+                    this,
+                    "Sélectionnez la personne à supprimer:",
+                    "Supprimer une personne",
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    personnes.toArray(),
+                    personnes.get(0));
+
+            if (personneSelectionnee != null) {
+                int confirm = JOptionPane.showConfirmDialog(
+                        this,
+                        "Êtes-vous sûr de vouloir supprimer '" + personneSelectionnee.getNomComplet() + "'?",
+                        "Confirmation de suppression",
+                        JOptionPane.YES_NO_OPTION);
+
+                if (confirm == JOptionPane.YES_OPTION) {
+                    boolean success = controller.supprimerPersonne(personneSelectionnee.getNomComplet());
+                    if (success) {
+                        JOptionPane.showMessageDialog(this, "Personne supprimée avec succès", "Succès", JOptionPane.INFORMATION_MESSAGE);
+                        refreshDisplay();
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Erreur lors de la suppression", "Erreur", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            }
         }
+    }
+
+    private void showEditAffaireDialog(Affaire affaire) {
+        JDialog editDialog = new JDialog(this, "Modifier une affaire", true);
+        editDialog.setLayout(new BorderLayout());
+        editDialog.setSize(500, 500);
+        editDialog.setLocationRelativeTo(this);
+
+        JPanel formPanel = new JPanel(new GridLayout(8, 2, 10, 10));
+        formPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
+
+        // Champs pré-remplis avec les valeurs actuelles
+        JTextField nomAffaireField = new JTextField(affaire.getNomAffaire());
+        JTextField crimeField = new JTextField(affaire.getCrime());
+        JTextField suspectField = new JTextField(affaire.getSuspect() != null ? affaire.getSuspect().getNomComplet() : "");
+        JTextField coupableField = new JTextField(affaire.getCoupable() != null ? affaire.getCoupable().getNomComplet() : "");
+        JTextField lieuField = new JTextField(affaire.getLieu());
+        JTextField etatField = new JTextField(affaire.getEtat());
+        JTextField dateField = new JTextField(affaire.getDate());
+        JTextField descriptionField = new JTextField(affaire.getDescription());
+
+        formPanel.add(new JLabel("Nom de l'affaire:"));
+        formPanel.add(nomAffaireField);
+        formPanel.add(new JLabel("Crime:"));
+        formPanel.add(crimeField);
+        formPanel.add(new JLabel("Suspect (Prénom Nom):"));
+        formPanel.add(suspectField);
+        formPanel.add(new JLabel("Coupable (Prénom Nom):"));
+        formPanel.add(coupableField);
+        formPanel.add(new JLabel("Lieu:"));
+        formPanel.add(lieuField);
+        formPanel.add(new JLabel("État (En cours/Fermée):"));
+        formPanel.add(etatField);
+        formPanel.add(new JLabel("Date (AAAA-MM-JJ):"));
+        formPanel.add(dateField);
+        formPanel.add(new JLabel("Description:"));
+        formPanel.add(descriptionField);
+
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        JButton cancelButton = new JButton("Annuler");
+        JButton saveButton = new JButton("Enregistrer");
+
+        cancelButton.addActionListener(e -> editDialog.dispose());
+        saveButton.addActionListener(e -> {
+            // Trouver le suspect et le coupable dans la liste des personnes
+            Personne suspect = AffaireController.trouverPersonneParNom(controller.getPersonnes(), suspectField.getText());
+            Personne coupable = AffaireController.trouverPersonneParNom(controller.getPersonnes(), coupableField.getText());
+
+            // Créer la nouvelle version de l'affaire
+            Affaire nouvelleAffaire = new Affaire(
+                    nomAffaireField.getText(),
+                    crimeField.getText(),
+                    suspect,
+                    coupable,
+                    lieuField.getText(),
+                    etatField.getText(),
+                    dateField.getText(),
+                    descriptionField.getText()
+            );
+
+            // Modifier l'affaire via le contrôleur
+            boolean success = controller.modifierAffaire(affaire.getNomAffaire(), nouvelleAffaire);
+
+            if (success) {
+                editDialog.dispose();
+                refreshDisplay();
+                JOptionPane.showMessageDialog(this, "Affaire modifiée avec succès!", "Succès", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this, "Erreur lors de la modification", "Erreur", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+
+        buttonPanel.add(cancelButton);
+        buttonPanel.add(saveButton);
+
+        editDialog.add(formPanel, BorderLayout.CENTER);
+        editDialog.add(buttonPanel, BorderLayout.SOUTH);
+        editDialog.setVisible(true);
+    }
+
+    private void showEditPersonneDialog(Personne personne) {
+        JDialog editDialog = new JDialog(this, "Modifier une personne", true);
+        editDialog.setLayout(new BorderLayout());
+        editDialog.setSize(500, 500);
+        editDialog.setLocationRelativeTo(this);
+
+        JPanel formPanel = new JPanel(new GridLayout(8, 2, 10, 10));
+        formPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
+
+        // Champs pré-remplis avec les valeurs actuelles
+        JTextField nomField = new JTextField(personne.getNom());
+        JTextField prenomField = new JTextField(personne.getPrenom());
+        JTextField ageField = new JTextField(personne.getAge());
+        JTextField quartierField = new JTextField(personne.getQuartier());
+        JTextField professionField = new JTextField(personne.getProfession());
+        JTextField genreField = new JTextField(personne.getGenre());
+        JTextField antecedentsField = new JTextField(personne.getAntecedents());
+        JTextField descriptionField = new JTextField(personne.getDescription());
+
+        formPanel.add(new JLabel("Nom:"));
+        formPanel.add(nomField);
+        formPanel.add(new JLabel("Prénom:"));
+        formPanel.add(prenomField);
+        formPanel.add(new JLabel("Âge:"));
+        formPanel.add(ageField);
+        formPanel.add(new JLabel("Quartier:"));
+        formPanel.add(quartierField);
+        formPanel.add(new JLabel("Profession:"));
+        formPanel.add(professionField);
+        formPanel.add(new JLabel("Genre:"));
+        formPanel.add(genreField);
+        formPanel.add(new JLabel("Antécédents:"));
+        formPanel.add(antecedentsField);
+        formPanel.add(new JLabel("Description:"));
+        formPanel.add(descriptionField);
+
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        JButton cancelButton = new JButton("Annuler");
+        JButton saveButton = new JButton("Enregistrer");
+
+        cancelButton.addActionListener(e -> editDialog.dispose());
+        saveButton.addActionListener(e -> {
+            // Créer la nouvelle version de la personne
+            Personne nouvellePersonne = new Personne(
+                    nomField.getText(),
+                    prenomField.getText(),
+                    ageField.getText(),
+                    quartierField.getText(),
+                    professionField.getText(),
+                    genreField.getText(),
+                    antecedentsField.getText(),
+                    descriptionField.getText()
+            );
+
+            // Modifier la personne via le contrôleur
+            boolean success = controller.modifierPersonne(personne.getNomComplet(), nouvellePersonne);
+
+            if (success) {
+                editDialog.dispose();
+                refreshDisplay();
+                JOptionPane.showMessageDialog(this, "Personne modifiée avec succès!", "Succès", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this, "Erreur lors de la modification", "Erreur", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+
+        buttonPanel.add(cancelButton);
+        buttonPanel.add(saveButton);
+
+        editDialog.add(formPanel, BorderLayout.CENTER);
+        editDialog.add(buttonPanel, BorderLayout.SOUTH);
+        editDialog.setVisible(true);
     }
 
     private JPanel createNotificationsPanel() {
