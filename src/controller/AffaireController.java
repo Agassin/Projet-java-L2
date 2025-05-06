@@ -89,11 +89,11 @@ public class AffaireController {
                 personnes.add(new Personne(
                         nextLine[0].trim(), // nom
                         nextLine[1].trim(), // prenom
-                        nextLine[2].trim(), //age
-                        nextLine[3].trim(), // quartier
-                        nextLine[4].trim(), // profession
-                        nextLine[5].trim(), // genre
-                        nextLine[6].trim(),  // antecedents
+                        nextLine[4].trim(), //age
+                        nextLine[5].trim(), // quartier
+                        nextLine[6].trim(), // profession
+                        nextLine[3].trim(), // genre
+                        nextLine[8].trim(),  // antecedents
                         nextLine[7].trim()  // description
                 ));
             }
