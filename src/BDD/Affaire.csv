@@ -1,22 +1,21 @@
 Nom_Affaire,Crime,Suspect,Coupable,Lieu,Etat,Date,Description
-Affaire 1,Vol,Manon Bernard,,Madeleine,En cours,2023-11-04,sac a main volé dans un train bondé.
-Affaire 2,Trafic de drogue,Alexandre Lemoine,,Rayssac,En cours,2016-03-25,distribution de drogues dures en centre-ville.
+Affaire 1,Vol,Manon Pichou,,Madeleine,En cours,2023-11-04,sac a main volé dans un train bondé.
+Affaire 2,Trafic de drogue,Alexandre Tripot,,Rayssac,En cours,2016-03-25,distribution de drogues dures en centre-ville.
 Affaire 3,Meurtre,Jean Lemoine,Jean Lemoine,Centre-Ville,Fermée,2020-12-07,compagne retrouvé morte après une dispute conjugale.
-Affaire 4,Escroquerie,Thomas Bernard,,Veyrières,En cours,2019-07-17,banque escroqué par une personne se faisant passé pour un agent d'entretient.
-Affaire 5,Fraude,Nicolas Bernard,Nicolad Bernard,Rayssac,Fermée,2020-03-01,
-Affaire 6,Escroquerie,Jean Martin,,Veyrières,En cours,2015-09-13,crédits contracté sous de fausses identités.
+Affaire 4,Escroquerie,Thomas Belgo,,Veyrières,En cours,2019-07-17,banque escroqué par une personne se faisant passé pour un agent d'entretient.
+Affaire 5,Fraude,Nicolas Gambert,Nicolad Gambert,Rayssac,Fermée,2020-03-01,
+Affaire 6,Escroquerie,Jean Colmart,,Veyrières,En cours,2015-09-13,crédits contracté sous de fausses identités.
 Affaire 7,Fraude,Sophie Martin,,Rayssac,En cours,2017-04-28,documents bancaires falsifié.
-Affaire 8,Meurtre,Hugo Fournier,,Rayssac,En cours,2015-02-06,Victime violament Poignardé.
-Affaire 9,Escroquerie,Pierre Lemoine,,Rocade,En cours,2017-11-11,produits inexistants vendu sur un site de petites annonces.
-Affaire 10,Trafic de drogue,Laura Lemoine,,Cantepau,En cours,2018-01-08,plusieurs kilos de stupéfiants intercepté dans le coffre d'une voiture abandonnée.
-Affaire 11,Escroquerie,Sophie Fournier,Sophie Fournier,Madeleine,Fermée,2015-11-21,
+Affaire 8,Meurtre,Hugo Fournier,,Rayssac,Fermée,2015-02-06,Victime violament Poignardé.
+Affaire 9,Escroquerie,Pierre Hullo,,Rocade,Fermée,2017-11-11,produits inexistants vendu sur un site de petites annonces.
+Affaire 10,Trafic de drogue,Laura Tolio,,Cantepau,En cours,2018-01-08,plusieurs kilos de stupéfiants intercepté dans le coffre d'une voiture abandonnée.
+Affaire 11,Escroquerie,Sophie Fournier,Sophie Fournier,Madeleine,Fermée,2015-11-21,A une fausse voiture de luxe à son voisin.
 Affaire 12,Fraude,Emma Morel,,Veyrières,En cours,2025-11-20,Reseau de fausses factures monté dans l'entreprise d'Emma Morel.
-Affaire 13,Vol,Alexandre Durand,Alexandre Durand,Veyrières,Fermée,2017-07-06,
+Affaire 13,Vol,Alexandre Durand,Alexandre Durand,Veyrières,Fermée,2017-07-06,Vol de pain dans une boulangerie
 Affaire 14,Cambriolage,Claire Fournier,,Madeleine,En cours,2024-12-01,villa isolés pénétré par une vitre cassé.
 Affaire 15,Trafic de drogue,Matheo Colmer,,Lapanouse,En cours,2017-12-22,point de vente clandestin dans un quartier sensible.
 Affaire 16,Meurtre,Paul Fournier,,Centre-ville,En cours,2023-05-19,vendeur retrouvé mort apres un Cambriolage dans le Centre-ville.
-Affaire 17,Vol,Jean Durand,,Centre-Ville,En cours,2021-07-08,Vol à l’étalage
+Affaire 17,Vol,Jean Durand,,Centre-Ville,En cours,2021-07-08,Vol à l’étalage.
 Affaire 18,Vol,Julie Dubois,Julie Dubois,Centre-Ville,En cours,2023-08-08,Voiture volé dans un parking souterrain.
 Affaire 19,Meurtre,Elise Durand,Elise Durand,Lapanouse,Fermée,2024-03-15,
-Affaire 20,Trafic de drogue,Alexandre Girard,,Centre-Ville,En cours,2016-11-04,traffic de drogue dans un lycée.
 Affaire 21,Trafic de drogue,Alexandre Girard,,Centre-Ville,Urgente,2016-11-04,traffic de drogue dans un lycée.
