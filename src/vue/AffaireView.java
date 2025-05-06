@@ -11,6 +11,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
+import java.awt.event.HierarchyEvent;
+import java.awt.event.HierarchyListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
@@ -84,20 +86,42 @@ public class AffaireView extends JFrame {
     private void createHeader() {
         JPanel header = new JPanel(new BorderLayout());
         header.setBackground(new Color(240, 240, 240));
-        header.setBorder(BorderFactory.createEmptyBorder(0, 20, 10, 20));
+        header.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
 
+        // Logo à gauche
         ImageIcon icon = new ImageIcon("images/Logo_gend.png");
         Image scaledImage = icon.getImage().getScaledInstance(120, 70, Image.SCALE_SMOOTH);
         JLabel logo = new JLabel(new ImageIcon(scaledImage), SwingConstants.LEFT);
         header.add(logo, BorderLayout.WEST);
 
-        JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 40));
+        // Centre : Champ de recherche avec une nouvelle approche
+        JPanel searchWrapper = new JPanel(new GridBagLayout());
+        searchWrapper.setOpaque(false);
+
         searchField = new JTextField(25);
         searchField.setPreferredSize(new Dimension(300, 30));
-        searchPanel.add(searchField);
-        header.add(searchPanel, BorderLayout.CENTER);
+        forceCursorToTop(searchField); // Ajoutez cette ligne
 
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 15, 40));
+
+        searchField = new JTextField(25) {
+            @Override
+            public void setBounds(int x, int y, int width, int height) {
+                super.setBounds(x, y, width, height);
+                setCaretPosition(0); // Force le curseur en haut à chaque redimensionnement
+            }
+        };
+        // Force l'alignement vertical
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.NORTH;
+        gbc.insets = new Insets(20, 0, 20, 0); // Ajustez ces valeurs pour le positionnement vertical
+
+        searchWrapper.add(searchField, gbc);
+        header.add(searchWrapper, BorderLayout.CENTER);
+
+        // Boutons à droite
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 15, 0));
+        buttonPanel.setOpaque(false);
+
         JButton profileButton = createIconButton("Profil", new Color(24, 75, 146));
         profileButton.addActionListener(e -> showProfile());
         buttonPanel.add(profileButton);
@@ -111,14 +135,30 @@ public class AffaireView extends JFrame {
         buttonPanel.add(settingsButton);
 
         header.add(buttonPanel, BorderLayout.EAST);
-        mainPanel.add(header, BorderLayout.NORTH);
 
+        // Listener pour la recherche
         searchField.getDocument().addDocumentListener(new DocumentListener() {
             @Override public void insertUpdate(DocumentEvent e) { search(); }
             @Override public void removeUpdate(DocumentEvent e) { search(); }
             @Override public void changedUpdate(DocumentEvent e) { search(); }
         });
+
+        mainPanel.add(header, BorderLayout.NORTH);
     }
+
+    private void forceCursorToTop(JTextField textField) {
+        textField.addHierarchyListener(new HierarchyListener() {
+            @Override
+            public void hierarchyChanged(HierarchyEvent e) {
+                if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0
+                        && textField.isShowing()) {
+                    textField.setCaretPosition(0);
+                    textField.removeHierarchyListener(this);
+                }
+            }
+        });
+    }
+
 
     private JPanel createDashboard() {
         JPanel dashboard = new JPanel(new BorderLayout());
@@ -893,8 +933,8 @@ public class AffaireView extends JFrame {
         panelAffaires.setLayout(new BorderLayout());
         panelAffaires.setBackground(new Color(248, 249, 250));
 
+        // Recharger les données avant d'afficher les résultats
         resultAlgoController.rechargerDonnees();
-
 
         // Panel principal
         JPanel cardPanel = new JPanel();
@@ -907,7 +947,6 @@ public class AffaireView extends JFrame {
 
         // Header avec bouton à droite
         JPanel headerPanel = new JPanel(new BorderLayout());
-
         JLabel titleLabel = new JLabel(affaire.getNomAffaire());
         titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 20));
         titleLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 15, 0));
@@ -936,12 +975,23 @@ public class AffaireView extends JFrame {
             addDetailRow(infoGrid, "🔒 Coupable", affaire.getCoupable().getNomComplet());
         }
 
-        // Création du texte pour les résultats similaires
+        // Description originale de l'affaire
+        JTextPane descriptionAffaire = new JTextPane();
+        descriptionAffaire.setContentType("text/html");
+        descriptionAffaire.setText("<html><body style='font-family: Arial; font-size: 14px;'><b>Description originale :</b><br>" +
+                affaire.getDescription() + "</body></html>");
+        descriptionAffaire.setEditable(false);
+        descriptionAffaire.setBackground(new Color(248, 249, 250));
+        descriptionAffaire.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createTitledBorder("📋 Description de l'affaire"),
+                BorderFactory.createEmptyBorder(10, 10, 10, 10)
+        ));
+
+        // Résultats similaires de l'algorithme
         StringBuilder similarResultsText = new StringBuilder("<html><body style='font-family: Arial; font-size: 14px;'>");
+        similarResultsText.append("<b>Résultats similaires :</b><br><br>");
 
-        // Récupérer les résultats similaires depuis le contrôleur
         List<ResultatAlgo> resultatsSimilaires = resultAlgoController.getCrimesSimilaires();
-
         for (ResultatAlgo result : resultatsSimilaires) {
             similarResultsText.append(String.format(
                     "<b>- %s %s (Antécédents : %s)</b><br>" +
@@ -954,17 +1004,15 @@ public class AffaireView extends JFrame {
                     result.getDescriptionCrime()
             ));
         }
-
         similarResultsText.append("</body></html>");
 
-        // Description dans un panel séparé
-        JTextPane descriptionArea = new JTextPane();
-        descriptionArea.setContentType("text/html");
-        descriptionArea.setText(similarResultsText.toString());
-        descriptionArea.setEditable(false);
-        descriptionArea.setBackground(new Color(248, 249, 250));
-        descriptionArea.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createTitledBorder("📋 Résultats similaires (Algorithme)"),
+        JTextPane descriptionAlgo = new JTextPane();
+        descriptionAlgo.setContentType("text/html");
+        descriptionAlgo.setText(similarResultsText.toString());
+        descriptionAlgo.setEditable(false);
+        descriptionAlgo.setBackground(new Color(248, 249, 250));
+        descriptionAlgo.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createTitledBorder("🔍 Résultats similaires (Algorithme)"),
                 BorderFactory.createEmptyBorder(10, 10, 10, 10)
         ));
 
@@ -972,7 +1020,9 @@ public class AffaireView extends JFrame {
         cardPanel.add(headerPanel);
         cardPanel.add(infoGrid);
         cardPanel.add(Box.createRigidArea(new Dimension(0, 15)));
-        cardPanel.add(descriptionArea);
+        cardPanel.add(descriptionAffaire);
+        cardPanel.add(Box.createRigidArea(new Dimension(0, 15)));
+        cardPanel.add(descriptionAlgo);
 
         panelAffaires.add(cardPanel, BorderLayout.CENTER);
         panelAffaires.revalidate();
@@ -1047,6 +1097,7 @@ public class AffaireView extends JFrame {
         JPanel infoGrid = new JPanel(new GridLayout(0, 2, 15, 10));
         infoGrid.setBorder(BorderFactory.createEmptyBorder(15, 10, 20, 10));
 
+        addDetailRow(infoGrid, "👤 Prénom", personne.getPrenom());
         addDetailRow(infoGrid, "👤 Âge", personne.getAge());
         addDetailRow(infoGrid, "💼 Profession", personne.getProfession());
         addDetailRow(infoGrid, "🏘️ Quartier", personne.getQuartier());
