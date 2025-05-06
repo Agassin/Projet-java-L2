@@ -1,33 +1,35 @@
 package src.model;
 
-import com.sun.tools.javac.Main;
-
 public class ResultatAlgo {
     private String prenom;
     private String nom;
     private String antecedents;
     private double similarite;
-    private String description;
+    private String descriptionCrime; // Champ pour stocker la description
 
-    public ResultatAlgo(String prenom, String nom, String antecedents, double similarite, String description) {
+    public ResultatAlgo(String prenom, String nom, String antecedents, double similarite, String descriptionCrime) {
         this.prenom = prenom;
         this.nom = nom;
         this.antecedents = antecedents;
         this.similarite = similarite;
-        this.description = description;
+        this.descriptionCrime = descriptionCrime;
     }
 
-    // Getters (facultatif pour afficher ou filtrer ensuite)
+    // Getters
     public String getPrenom() { return prenom; }
     public String getNom() { return nom; }
     public String getAntecedents() { return antecedents; }
     public double getSimilarite() { return similarite; }
-    public String getDescription() { return description; }
+    public String getDescriptionCrime() { return descriptionCrime; } // Getter pour la description
 
     @Override
     public String toString() {
-        return prenom + " " + nom + " (" + antecedents + ") - Similarité: " + similarite + "\nDescription: " + description;
+        return "ResultatAlgo{" +
+                "prenom='" + prenom + '\'' +
+                ", nom='" + nom + '\'' +
+                ", antecedents='" + antecedents + '\'' +
+                ", similarite=" + similarite +
+                ", descriptionCrime='" + descriptionCrime + '\'' +
+                '}';
     }
-
 }
-
