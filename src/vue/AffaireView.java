@@ -1,8 +1,10 @@
 package src.vue;
 
 import src.controller.AffaireController;
+import src.controller.ResultAlgoController;
 import src.model.Affaire;
 import src.model.Personne;
+import src.model.ResultatAlgo;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -12,6 +14,7 @@ import java.awt.*;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
+import java.util.List;
 import java.util.Objects;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -39,13 +42,15 @@ public class AffaireView extends JFrame {
     private JButton btnAffaires, btnPersonnes;
     private boolean showAffaires = true;
     private boolean showPersonnes = true;
+    private ResultAlgoController resultAlgoController;
 
     public AffaireView(AffaireController controller, String username) {
         this.controller = Objects.requireNonNull(controller, "Controller ne peut pas être null");
         this.username = username;
+        this.resultAlgoController = new ResultAlgoController(); // Initialisation
         initUI();
         showDashboard();
-        refreshDisplay(); // Ajoutez cette ligne pour afficher les cartes dès le départ
+        refreshDisplay();
     }
 
     private void initUI() {
@@ -646,6 +651,9 @@ public class AffaireView extends JFrame {
         panelAffaires.setLayout(new BorderLayout());
         panelAffaires.setBackground(new Color(248, 249, 250));
 
+        resultAlgoController.rechargerDonnees();
+
+
         // Panel principal
         JPanel cardPanel = new JPanel();
         cardPanel.setLayout(new BoxLayout(cardPanel, BoxLayout.Y_AXIS));
@@ -666,7 +674,6 @@ public class AffaireView extends JFrame {
         styleBackButton(backButton);
         backButton.addActionListener(e -> refreshDisplay());
 
-        // Ajout des composants avec le bouton à droite
         headerPanel.add(titleLabel, BorderLayout.CENTER);
         headerPanel.add(backButton, BorderLayout.EAST);
 
@@ -687,14 +694,35 @@ public class AffaireView extends JFrame {
             addDetailRow(infoGrid, "🔒 Coupable", affaire.getCoupable().getNomComplet());
         }
 
+        // Création du texte pour les résultats similaires
+        StringBuilder similarResultsText = new StringBuilder("<html><body style='font-family: Arial; font-size: 14px;'>");
+
+        // Récupérer les résultats similaires depuis le contrôleur
+        List<ResultatAlgo> resultatsSimilaires = resultAlgoController.getCrimesSimilaires();
+
+        for (ResultatAlgo result : resultatsSimilaires) {
+            similarResultsText.append(String.format(
+                    "<b>- %s %s (Antécédents : %s)</b><br>" +
+                            "&nbsp;&nbsp;&nbsp;&nbsp;--> Similarité : %.2f<br>" +
+                            "&nbsp;&nbsp;&nbsp;&nbsp;--> Description : %s<br><br>",
+                    result.getPrenom(),
+                    result.getNom(),
+                    result.getAntecedents(),
+                    result.getSimilarite(),
+                    result.getDescriptionCrime()
+            ));
+        }
+
+        similarResultsText.append("</body></html>");
+
         // Description dans un panel séparé
-        JTextArea descriptionArea = new JTextArea(affaire.getDescription());
-        descriptionArea.setLineWrap(true);
-        descriptionArea.setWrapStyleWord(true);
+        JTextPane descriptionArea = new JTextPane();
+        descriptionArea.setContentType("text/html");
+        descriptionArea.setText(similarResultsText.toString());
         descriptionArea.setEditable(false);
-        descriptionArea.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        descriptionArea.setBackground(new Color(248, 249, 250));
         descriptionArea.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createTitledBorder("📋 Description"),
+                BorderFactory.createTitledBorder("📋 Résultats similaires (Algorithme)"),
                 BorderFactory.createEmptyBorder(10, 10, 10, 10)
         ));
 
@@ -903,10 +931,11 @@ public class AffaireView extends JFrame {
                 public void mouseClicked(MouseEvent e) {
                     try {
                         // Chemin vers le script Python
-                        String pythonExe = "C:\\Users\\Mat le gros lardon\\Documents\\GitHub\\Projet-java-L2\\.venv\\Scripts\\python.exe";
+                        String pythonExe = "C:\\Users\\adrie\\Documents\\L2\\Projet Java L2\\Projet-java-L2\\untitled\\.venv\\Scripts\\python.exe";
+
 
                         // Dossier contenant AlgoLienAffaire.py
-                        File workingDir = new File("C:\\Users\\Mat le gros lardon\\Documents\\GitHub\\Projet-java-L2\\src\\controller");
+                        File workingDir = new File("C:\\Users\\adrie\\Documents\\L2\\Projet Java L2\\Projet-java-L2\\src\\controller");
 
                         // Nom du script seulement, car il est dans ce dossier
                         String scriptPath = "AlgoLienAffaire.py";
