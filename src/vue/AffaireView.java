@@ -959,7 +959,7 @@ public class AffaireView extends JFrame {
         headerPanel.add(backButton, BorderLayout.EAST);
 
         // Grid des informations
-        JPanel infoGrid = new JPanel(new GridLayout(0, 2, 15, 10));
+        JPanel infoGrid = new JPanel(new GridLayout(0, 2, 10, 10));
         infoGrid.setBorder(BorderFactory.createEmptyBorder(15, 10, 20, 10));
 
         addDetailRow(infoGrid, "📌 Crime", affaire.getCrime());

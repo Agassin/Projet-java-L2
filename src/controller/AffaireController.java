@@ -29,9 +29,6 @@ public class AffaireController {
         } catch (Exception e) {
             System.err.println("Erreur chargement données CSV: " + e.getMessage());
             // Données de test en cas d'échec
-            ajouterAffaire(new Affaire("Affaire 1", "Vol", null, null, "Paris", "Ouvert", "2023-01-01", "sac a main volé dans un train bondé."));
-            ajouterAffaire(new Affaire("Affaire 2", "Fraude", null, null, "Lyon", "Fermé", "2023-02-01","distribution de drogues dures en centre-ville."));
-            ajouterAffaire(new Affaire("Affaire 3", "Cambriolage", null, null, "Marseille", "En cours", "2023-03-01","compagne retrouvé morte après une dispute conjugale."));
         }
     }
 

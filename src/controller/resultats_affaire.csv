@@ -1,4 +1,4 @@
 Prénom,Nom,antecedents,Similarite,Description Crime
-Alexandre,Martin,Vol,0.38975028328444516,A subtilisé des téléphones portables dans un train bondé.
-Sophie,Rousseau,Vol,0.2692904051820838,A dérobé des sacs à main dans un centre commercial.
-Marie,Durand,Vol,0.18367907861761643,A volé des médicaments dans une pharmacie de garde.
+Nicolas,Fournier,Meurtre,0.4386999472565985,A poignardé la victime lors d’une altercation violente.
+Emma,Girard,Meurtre,0.16388693161931972,A étranglé sa victime avec un câble électrique lors d’un cambriolage.
+Elise,Bernard,Meurtre,0.0,A tendu une embuscade mortelle à un rival d'affaires.
